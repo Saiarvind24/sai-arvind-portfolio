@@ -124,7 +124,7 @@ useEffect(() => {
 <header className={styles.globalHeader}>
 
 <div className={styles.logo}>
-SAI ARVIND VS | B.E, MSc Computer Science
+SAI ARVIND VS 007 | B.E, MSc Computer Science
 </div>
 
 <nav className={styles.navDock}>
