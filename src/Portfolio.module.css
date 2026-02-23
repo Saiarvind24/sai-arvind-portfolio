@@ -115,13 +115,13 @@ html,body{
     margin:40px auto;  
 
   font-size:20px;         /* bigger professional text */
-  line-height:1.9;
+  line-height:1.6;
 
   color:#ffffff;
 
   text-align:JUSTIFY;
 
-  letter-spacing:.3px;
+  letter-spacing:.2px;
 }
 
 .heroImage{
@@ -2338,6 +2338,90 @@ img{
 
   margin-left:auto;
   margin-right:auto;
+}
+
+}/* ===============================
+   AUTO HIDE AWS INFO BAR
+=============================== */
+.awsBar{
+  position:fixed;
+  top:70px;
+  left:0;
+  width:100%;
+  text-align:center;
+
+  z-index:999;
+
+  background:rgba(5,20,35,.45);
+  backdrop-filter:blur(14px);
+
+  border-bottom:1px solid rgba(0,212,255,.15);
+
+  transition:
+    transform .35s ease,
+    opacity .35s ease;
+
+  will-change:transform;
+}
+
+/* SHOW */
+.showBar{
+  transform:translateY(0);
+  opacity:1;
+}
+
+/* HIDE */
+.hideBar{
+  transform:translateY(-120%);
+  opacity:0;
+  pointer-events:none;
+}
+/* =========================================
+   ✅ MOBILE + TABLET AWS BAR FIX
+========================================= */
+/* ===============================
+   AWS BAR RESPONSIVE FIX
+================================= */
+
+@media (max-width: 768px){
+
+  .awsBar{
+    top: 100px;   /* navbar becomes taller on mobile */
+  }
+
+}
+@media (max-width:768px){
+
+  .awsOffset{
+    padding-top:70px;
+  }
+
+  .heroOffset{
+    margin-top:140px;
+  }
+
+}
+@media (max-width:768px){
+
+.heroSection{
+  padding-top:40px;
+  text-align:center;
+}
+
+.heroImage{
+  width:160px;
+  height:160px;
+  object-fit:cover;
+}
+
+}
+@media (max-width:768px){
+
+.navDock{
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:8px;
+  padding:10px;
 }
 
 }

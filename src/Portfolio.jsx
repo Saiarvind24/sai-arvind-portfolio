@@ -18,6 +18,9 @@ export default function SaiArvindPortfolio() {
 
   const [activeSection, setActiveSection] = useState("OVERVIEW");
   const [expanded, setExpanded] = useState(false);
+  const [showAwsBar, setShowAwsBar] = useState(true);
+
+  console.log("AWS:", showAwsBar);
 
   const formRef = useRef();
   const sendEmail = (e) => {
@@ -59,48 +62,61 @@ export default function SaiArvindPortfolio() {
 useEffect(() => {
 
   let ticking = false;
+  let lastScrollY = window.scrollY;
+  let currentSectionRef = "OVERVIEW";
 
   const handleScroll = () => {
 
-    if (!ticking) {
+    if (ticking) return;
+    ticking = true;
 
-      window.requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
 
-        const scrollMiddle = window.innerHeight / 2;
+      const scrollMiddle = window.innerHeight / 2;
 
-        let closestSection = "OVERVIEW";
-        let smallestDistance = Infinity;
+      let closestSection = "OVERVIEW";
+      let smallestDistance = Infinity;
 
-        sections.forEach(sec => {
+      sections.forEach(sec => {
 
-          const element =
-            sectionRefs.current[sec]?.current;
+        const element =
+          sectionRefs.current[sec]?.current;
 
-          if (!element) return;
+        if (!element) return;
 
-          const rect = element.getBoundingClientRect();
+        const rect = element.getBoundingClientRect();
+        const sectionCenter =
+          rect.top + rect.height / 2;
 
-          const sectionCenter =
-            rect.top + rect.height / 2;
+        const distance =
+          Math.abs(scrollMiddle - sectionCenter);
 
-          const distance =
-            Math.abs(scrollMiddle - sectionCenter);
-
-          if (distance < smallestDistance) {
-            smallestDistance = distance;
-            closestSection = sec;
-          }
-
-        });
-
-        setActiveSection(closestSection);
-
-        ticking = false;
-
+        if (distance < smallestDistance) {
+          smallestDistance = distance;
+          closestSection = sec;
+        }
       });
 
-      ticking = true;
-    }
+      /* ✅ NAV ACTIVE */
+      if (currentSectionRef !== closestSection) {
+        currentSectionRef = closestSection;
+        setActiveSection(closestSection);
+      }
+
+      /* ✅ AWS BAR SHOW / HIDE */
+      const currentScroll = window.scrollY;
+
+      if (currentScroll > lastScrollY + 8) {
+        setShowAwsBar(false);
+      } 
+      else if (currentScroll < lastScrollY - 8) {
+        setShowAwsBar(true);
+      }
+
+      lastScrollY = currentScroll;
+      ticking = false;
+
+    });
   };
 
   window.addEventListener("scroll", handleScroll, {
@@ -120,6 +136,16 @@ useEffect(() => {
 <div className={styles.cyberContainer}>
   <div className={styles.backgroundFX}>
     </div>
+
+<div
+  className={`${styles.awsBar} ${
+    showAwsBar ? styles.showBar : styles.hideBar
+  }`}
+>
+  <div className="awsBarInner">
+    This Site is Deployed on AWS Cloud Infrastructure!
+  </div>
+</div>
 
 {/* ================= NAV ================= */}
 <header className={styles.globalHeader}>
@@ -144,15 +170,16 @@ onClick={()=>scrollToSection("ENQUIRY")}
 >
 HIRE ME
 </button>
-
-<div className={styles.hostingBar}>
-  This Site is Deployed on AWS Cloud Infrastructure!
-</div>
-
 </header>
 
+
+
 {/* ================= MAIN ================= */}
-<main className={styles.mainLayout}>
+<main
+className={`${styles.mainLayout}
+${showAwsBar ? styles.awsOffset : ""}`}
+>
+  
 
 {/* ========= HERO ========= */}
 <motion.section
@@ -162,7 +189,8 @@ whileInView="visible"
 viewport={{once:true}}
 ref={sectionRefs.current.OVERVIEW}
 data-section="OVERVIEW"
-className={styles.heroSection}
+className={`${styles.heroSection}
+${showAwsBar ? styles.heroOffset : ""}`}
 >
 
 <img src="/IMG_6784.JPG.jpeg"
