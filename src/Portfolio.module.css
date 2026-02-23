@@ -56,7 +56,7 @@ html,body{
   padding:7px 10px;
   border-radius:8px;
   cursor:pointer;
-  color:#9ca3af;
+  color:#d6e6ff;
   transition:.3s;
 }
 
@@ -89,15 +89,25 @@ html,body{
 
 /* ================= MAIN ================= */
 .mainLayout{
-  padding-top:120px;
+  padding-top:140px;
   max-width:1100px;
   margin:auto;
+}
+/* ================= FORCE HOSTING TEXT COLOR ================= */
+
+.hostingBar{
+  color:#ffffff !important;
+
+  text-shadow:
+    0 0 6px rgba(0,212,255,.7),
+    0 0 14px rgba(0,212,255,.35) !important;
 }
 
 /* ================= HERO ================= */
 .heroSection{
   text-align:center;
   margin-bottom:120px;
+  padding-top:px;
 }
 .heroStatement{
 
@@ -154,16 +164,19 @@ html,body{
 /* ================= PROJECT PREMIUM ================= */
 
 .projectShowcase{
-  margin:120px 0;
+  margin:10px 0;
   text-align:center;
 }
 
 .sectionTitle{
   text-align:center;
   font-size:40px;
-  margin-bottom:60px;
+  margin-bottom:10px;
 }
 
+.projectDivider{
+  margin:40px auto;
+}
 /* ===== MEDIA WRAPPER ===== */
 
 .mediaWrapper{
@@ -239,11 +252,11 @@ html,body{
 }
 
 .techStackWrapper{
-  margin-top:45px;
+  margin-top:4px;
   text-align:center;
 }
 .techTitle{
-  margin-bottom:20px;
+  margin-bottom:2px;
 }
 .techInnerBox{
   display:flex;
@@ -255,8 +268,8 @@ html,body{
   width:260px;
   margin:auto;
 
-  padding:1px 160px;
-  padding-bottom: 20px;
+  padding:1px 1px;
+  padding-bottom: 10px;
 
   border-radius:14px;
 
@@ -313,11 +326,10 @@ html,body{
 /* ================= SKILLS ================= */
 .skillLogoWrapper{
   width:100%;
-  height:100px;
-
   display:flex;
   align-items:center;
   justify-content:center;
+  margin-bottom:8px;
 }
 
 .skillGrid{
@@ -339,8 +351,8 @@ html,body{
 }
 
 .skillCard img{
-  width:100px;
-  height:100px;
+  width:70px;
+  height:70px;
   object-fit:contain;
   margin-bottom:10px;
 }
@@ -1185,10 +1197,9 @@ html,body{
   100%{transform:translate(0,0);}
 }
 /* =====================================================
-   🌍 UNIVERSAL RESPONSIVE SYSTEM
-   ONE SOLUTION FOR ALL SCREEN SIZES
+   ✅ UNIVERSAL READ MORE BUTTON
+   SAFE FOR ALL DEVICES
 ===================================================== */
-
 
 /* ===============================
    GLOBAL SAFE LAYOUT
@@ -1324,15 +1335,32 @@ video{
   background:black;
 }
 /* =====================================================
-   ✅ TEXT CONTAINMENT
+   ✅ TEXT BALANCE SYSTEM
 ===================================================== */
 
 .projectText{
-  max-width:850px;
-  margin:25px auto;
-  padding:0 15px;
+
+  max-width:720px;
+  margin-left:auto;
+  margin-right:auto;
+
+  text-align:left;
+  line-height:1.75;
+
+  word-break:normal;
+  overflow-wrap:break-word;
 }
 
+.projectText p{
+  margin-bottom:18px;
+}
+/* =====================================================
+   ✅ READ MORE COLLAPSE
+===================================================== */
+
+.projectText:not(.expanded) p:nth-child(n+3){
+  display:none;
+}
 
 /* =====================================================
    ✅ CERTIFICATION + LOGO ALIGNMENT
@@ -1691,6 +1719,586 @@ video{
 
 .sectionTitle{
   font-size:22px;
+}
+
+}
+/* =====================================================
+   ⭐ PROFESSIONAL MOBILE REFINEMENT SYSTEM
+   (SAFE — LAPTOP DESIGN UNTOUCHED)
+===================================================== */
+
+@media (max-width:768px){
+
+/* ===============================
+   GLOBAL CONTENT CONTAINER
+================================ */
+
+.mainLayout{
+  padding:180px 16px 40px;
+  max-width:100%;
+}
+
+
+/* ===============================
+   UNIVERSAL SECTION BOX FEEL
+================================ */
+
+.glassCard,
+.artistIntroBox,
+.caseStudyBox,
+.resumeCard,
+.contactCard{
+
+  margin-left:auto;
+  margin-right:auto;
+
+  max-width:520px;
+
+  padding:22px 18px;
+
+  border-radius:14px;
+}
+
+
+/* ===============================
+   PERFECT TEXT READABILITY
+================================ */
+
+.heroStatement,
+.projectText,
+.artistParagraph,
+.educationContent p,
+.caseStudyBox p,
+.realtimeProjectText{
+
+  max-width:480px;
+
+  margin-left:auto;
+  margin-right:auto;
+
+  font-size:15px;
+  line-height:1.65;
+
+  text-align:left !important;
+
+  padding:0;
+
+}
+
+
+/* ===============================
+   REMOVE LONG TEXT LOOK
+================================ */
+
+.projectText{
+  margin:20px auto;
+}
+
+
+/* ===============================
+   SECTION TITLES CLEAN SCALE
+================================ */
+
+.sectionTitle{
+  font-size:24px;
+  margin-bottom:35px;
+}
+
+
+/* ===============================
+   PROJECT TITLE BOX
+================================ */
+
+.projectTitle{
+  max-width:90%;
+  margin:auto;
+  font-size:19px;
+}
+
+
+/* ===============================
+   SKILL + CERT CARD COMPACT
+================================ */
+
+.skillCard,
+.certCard,
+.achievementCard{
+
+  max-width:420px;
+  margin:auto;
+  padding:18px;
+}
+
+
+/* ===============================
+   EDUCATION CLEAN STACK
+================================ */
+
+.educationCard{
+  max-width:520px;
+  margin:auto;
+  padding:20px;
+}
+
+
+/* ===============================
+   TECH STACK BOX FIX
+================================ */
+
+.techInnerBox{
+  max-width:260px;
+  padding:16px 20px;
+}
+
+
+/* ===============================
+   IMAGE + VIDEO SAFE WIDTH
+================================ */
+
+.projectMedia,
+.artistVideo{
+  border-radius:10px;
+  max-width:100%;
+}
+
+
+/* ===============================
+   BETTER SECTION SPACING
+================================ */
+
+.projectShowcase,
+.resumeWrapper,
+.contactSection{
+  margin:70px 0;
+}
+
+}
+/* =====================================================
+   ⭐ PERFECT EQUAL SKILL CARDS (FINAL FIX)
+===================================================== */
+
+@media (max-width:768px){
+
+.skillGrid{
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
+}
+
+
+/* CARD STRUCTURE */
+.skillCard{
+
+  width: 120px;
+  height:100px;          /* ⭐ equal height */
+  padding:14px;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+
+  margin:auto;
+}
+
+
+/* FIXED LOGO AREA */
+.skillLogoWrapper{
+
+  height:60px;           /* ⭐ SAME SPACE FOR ALL */
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  margin-bottom:10px;
+}
+
+
+/* NORMALIZED ICON SIZE */
+.skillLogoWrapper img{
+  max-height:50px;
+  max-width:50px;
+  object-fit:contain;
+  margin-top: 10px;
+}
+
+
+/* TEXT POSITION LOCK */
+.skillCard h3,
+.skillTitle{
+  font-size:14px;
+  margin-top:0.5px;
+  
+}
+
+}
+/* ==========================================
+   ✅ MOBILE TEXT SHORTENING
+========================================== */
+
+@media (max-width:768px){
+
+.projectText,
+.realtimeProjectText{
+
+  display:-webkit-box;
+  -webkit-line-clamp:5;   /* show only 5 lines */
+  -webkit-box-orient:vertical;
+
+  overflow:hidden;
+
+  font-size:15px;
+  line-height:1.6;
+}
+
+}
+/* =====================================================
+   ⭐ FINAL RESPONSIVE STABILITY LAYER
+   (NO DESKTOP IMPACT)
+===================================================== */
+
+@media (max-width:1024px){
+
+.mainLayout{
+  padding-left:18px;
+  padding-right:18px;
+}
+
+.glassCard,
+.artistIntroBox,
+.caseStudyBox,
+.resumeCard,
+.contactCard{
+  max-width:760px;
+  margin:auto;
+}
+
+}
+
+
+/* ================= MOBILE ================= */
+
+@media (max-width:768px){
+
+.mainLayout{
+  padding:170px 14px 40px;
+}
+
+/* prevent text touching edges */
+.heroStatement,
+.artistParagraph{
+  max-width:520px;
+  margin:auto;
+  padding:0;
+}
+@media (max-width:768px){
+
+.projectText{
+
+  width:100%;
+  max-width:100%;
+
+  margin:0 auto;
+
+  padding-left:18px;
+  padding-right:18px;
+
+  text-align:left;
+
+  box-sizing:border-box;
+}
+}
+
+/* buttons centered */
+.readMoreBtn{
+  width:fit-content;
+}
+
+/* media safe scaling */
+.projectMedia,
+.artistVideo,
+img{
+  max-width:100%;
+  height:auto;
+}
+
+/* grids never overflow */
+.skillGrid,
+.certGrid,
+.projectGallery{
+  width:100%;
+}
+
+/* cards centered */
+.skillCard,
+.certCard,
+.achievementCard,
+.educationCard{
+  margin:auto;
+}
+
+}
+
+
+/* ================= SMALL PHONES ================= */
+
+@media (max-width:480px){
+
+.projectText{
+  font-size:15px;
+  line-height:1.65;
+}
+
+.sectionTitle{
+  font-size:24px;
+}
+
+.readMoreBtn{
+  padding:9px 18px;
+  font-size:13px;
+}
+
+}
+
+
+/* ================= EXTREME DEVICES ================= */
+
+@media (max-width:360px){
+
+.projectText{
+  font-size:14.5px;
+}
+
+}
+/* =====================================================
+   ✅ UNIVERSAL READ MORE BUTTON
+   SAFE FOR ALL DEVICES
+===================================================== */
+/* =====================================================
+   ✅ READ MORE SYSTEM (SAFE)
+===================================================== */
+
+.projectText{
+  max-width:720px;
+  margin-left:auto;
+  margin-right:auto;
+  text-align:left;
+  line-height:1.75;
+}
+
+.projectText p{
+  margin-bottom:18px;
+}
+
+/* show only first 2 paragraphs */
+.projectText:not(.expanded) p:nth-child(n+3){
+  display:none;
+}
+
+
+/* BUTTON */
+.readMoreBtn{
+
+  display:block;
+  margin:18px auto 19px;
+
+  padding:10px 22px;
+
+  border-radius:10px;
+  border:1px solid var(--neon-blue);
+
+  background:rgba(0,212,255,.08);
+  color:var(--neon-blue);
+
+  cursor:pointer;
+  transition:.3s ease;
+}
+
+.readMoreBtn:hover{
+  background:#00d4ff;
+  color:black;
+}
+/* default = collapsed */
+.projectText p:nth-child(n+3){
+  display:none;
+}
+
+/* when expanded → show all */
+.expanded p{
+  display:block;
+}
+.projectText p:nth-child(n+3){
+  display:none;
+}
+
+/* FORCE SHOW when expanded */
+.projectText.expanded p{
+  display:block !important;
+}
+/* =====================================================
+   ✅ MOBILE EXPANSION FIX
+===================================================== */
+
+@media (max-width:768px){
+
+/* collapsed mobile */
+.projectText:not(.expanded){
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:5;
+  overflow:hidden;
+}
+
+/* ✅ expanded MUST REMOVE CLAMP */
+.projectText.expanded{
+
+  display:block !important;
+
+  -webkit-line-clamp:unset !important;
+  overflow:visible !important;
+  height:auto !important;
+  max-height:none !important;
+}
+
+}
+/* =====================================================
+   ✅ MOBILE SECTION SPACING FIX
+   prevents glass overlap
+===================================================== */
+
+@media (max-width:768px){
+
+.glassCard{
+
+  margin-top:60px !important;
+  margin-bottom:60px !important;
+
+  padding:26px 18px;
+
+}
+
+/* extra breathing space after projects */
+.projectShowcase{
+  margin-bottom:50px;
+}
+
+}
+
+/* =====================================================
+   ✅ TECH STACK MOBILE COMPRESSION
+===================================================== */
+
+@media (max-width:768px){
+
+.techInnerBox{
+
+  width:50%;
+  max-width:260px;
+
+  padding:18px 16px;
+
+  margin:30px auto;
+
+  height: 50%; /* fixed height for uniformity */
+
+  border-radius:12px;
+}
+
+
+/* title smaller */
+.techTitle{
+  font-size:20px;
+}
+
+
+/* stack text */
+.techList span{
+  font-size:14px;
+  line-height:1.5;
+  color: #ffffff;
+}
+
+}
+
+/* ===== Artist Read More ===== */
+
+.artistParagraph{
+  max-width:720px;
+  margin:auto;
+  text-align:left;
+  line-height:1.75;
+}
+
+.artistParagraph p{
+  margin-bottom:16px;
+}
+
+/* collapsed */
+.artistParagraph p:nth-child(n+3){
+  display:none;
+}
+
+/* expanded */
+.artistParagraph.expanded p{
+  display:block !important;
+}
+
+/* =====================================================
+   ✅ AWS HOSTING INFO BAR
+===================================================== */
+
+.hostingBar{
+
+  width:100%;
+
+  text-align:center;
+
+  font-size:16px;
+  letter-spacing:.3px;
+
+  padding:8px 12px;
+
+  color:#94a3b8;
+
+  background:rgba(0,212,255,.05);
+
+  border-bottom:1px solid rgba(0,212,255,.15);
+
+  backdrop-filter:blur(12px);
+
+}
+@media (max-width:768px){
+
+.realtimeProjectText{}
+
+.hostingBar{
+  font-size:11.5px;
+  padding:6px 10px;
+}
+
+}
+/* =====================================================
+   ✅ MOBILE FULL WIDTH FIX
+===================================================== */
+
+@media (max-width:768px){
+.realtimeProjectText{
+  width:100%;
+  max-width:100%;
+  margin: auto;
+  padding:0 12px;
+  text-align:left;
+}
+}
+@media (max-width:768px){
+
+.glassCard{
+
+  width:100%;
+  margin-left:0;
+  margin-right:0;
+
+  border-radius:18px;
+
 }
 
 }

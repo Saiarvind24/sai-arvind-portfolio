@@ -17,7 +17,8 @@ const sections = [
 export default function SaiArvindPortfolio() {
 
   const [activeSection, setActiveSection] = useState("OVERVIEW");
-  
+  const [expanded, setExpanded] = useState(false);
+
   const formRef = useRef();
   const sendEmail = (e) => {
   e.preventDefault();
@@ -123,9 +124,6 @@ useEffect(() => {
 {/* ================= NAV ================= */}
 <header className={styles.globalHeader}>
 
-<div className={styles.logo}>
-SAI ARVIND VS  | B.E, MSc Computer Science
-</div>
 
 <nav className={styles.navDock}>
 {sections.map(sec => (
@@ -146,6 +144,10 @@ onClick={()=>scrollToSection("ENQUIRY")}
 >
 HIRE ME
 </button>
+
+<div className={styles.hostingBar}>
+  This Site is Deployed on AWS Cloud Infrastructure!
+</div>
 
 </header>
 
@@ -281,23 +283,39 @@ Medical Assistant Chatbot
 </div>
 
 <div className={styles.textProjectCard}>
+    <div
+  className={
+    expanded
+      ? `${styles.projectText} ${styles.expanded}`
+      : styles.projectText
+  }
+>
 
-<p className={styles.projectText}>
+<p>
 Designed and developed an intelligent medical assistant
 focused on seamless human–computer interaction through a
-responsive React interface. The system integrates Natural
+responsive React interface. 
+</p>
+<p>The system integrates Natural
 Language Processing models trained using TensorFlow,
 enabling accurate understanding and resolution of user
 health queries.
 </p>
-
-<p className={styles.projectText}>
+<p>
 Emotion-aware conversational responses were implemented
 using Transformer architectures and OpenAI APIs, allowing
 adaptive behaviour based on detected user sentiment while
 maintaining structured deployment and long-term
 operational reliability.
 </p>
+</div>
+  {/* ✅ BUTTON OUTSIDE */}
+  <button
+    className={styles.readMoreBtn}
+    onClick={() => setExpanded(!expanded)}
+  >
+    {expanded ? "Show Less" : "Read More"}
+  </button>
 
 <div className={styles.techStack}>
   <div className={styles.techInnerBox}>
@@ -327,29 +345,47 @@ operational reliability.
 
 <div className={styles.textProjectCard}>
 
-<p className={styles.projectText}>
-Engineered a production-grade ticketing platform for a
-large-scale university cultural event supporting over
-5,000 global attendees. The system was developed across
-the full software lifecycle, beginning from requirement
-analysis through live-site deployment and operational
-monitoring.
-</p>
+  <div
+  className={
+    expanded
+      ? `${styles.projectText} ${styles.expanded}`
+      : styles.projectText
+  }
+>
 
-<p className={styles.projectText}>
-Close collaboration with stakeholders enabled iterative
-feature refinement including secure checkout workflows
-and real-time ticket generation. The infrastructure was
-deployed on AWS using Elastic Load Balancing and
-Auto Scaling, achieving consistent service stability
-and 99.9% uptime during high-concurrency launches.
-</p>
+    <p>
+      Engineered a production-grade ticketing platform for a
+      large-scale university cultural event supporting over
+      5,000 global attendees. The system was developed across
+      the full software lifecycle, beginning from requirement
+      analysis through live-site deployment and operational
+      monitoring.
+    </p>
 
-<p className={styles.projectText}>
-Comprehensive deployment documentation and recovery
-procedures were authored to ensure rapid incident
-response and long-term maintainability of the service.
-</p>
+    <p>
+      Close collaboration with stakeholders enabled iterative
+      feature refinement including secure checkout workflows
+      and real-time ticket generation. The infrastructure was
+      deployed on AWS using Elastic Load Balancing and
+      Auto Scaling, achieving consistent service stability
+      and 99.9% uptime during high-concurrency launches.
+    </p>
+
+    <p>
+      Comprehensive deployment documentation and recovery
+      procedures were authored to ensure rapid incident
+      response and long-term maintainability of the service.
+    </p>
+ </div>
+
+  {/* ✅ BUTTON OUTSIDE */}
+  <button
+    className={styles.readMoreBtn}
+    onClick={() => setExpanded(!expanded)}
+  >
+    {expanded ? "Show Less" : "Read More"}
+  </button>
+
 
 <div className={styles.techStack}>
   <div className={styles.techInnerBox}>
@@ -679,31 +715,54 @@ className={styles.artistSection}
 
 {/* ================= ARTIST INTRO ================= */}
 <div className={styles.artistIntroBox}>
+
   <h2 className={styles.sectionTitle}>
-Artist & Achievements
-</h2>
+    Artist & Achievements
+  </h2>
 
-<p className={styles.artistParagraph}>
-A multidisciplinary professional operating at the intersection of technology, creativity, and music.
-With a strong academic foundation in Computer Science, I specialize in engineering scalable digital
-solutions while expressing artistic depth as a trained musician and keyboardist.
+  {/* TEXT CONTAINER */}
+  <div
+    className={`${styles.artistParagraph} ${
+      expanded ? styles.expanded : ""
+    }`}
+  >
 
-My journey uniquely combines analytical problem-solving with creative expression,
-enabling me to bridge structured engineering principles with human-centered artistic experiences.
-From performing classical symphonic compositions to designing and developing production-grade software systems,
-my work reflects a consistent commitment to innovation, precision, and continuous growth.
+    <p>
+      A multidisciplinary professional operating at the intersection
+      of technology, creativity, and music. With a strong academic
+      foundation in Computer Science, I specialize in engineering
+      scalable digital solutions while expressing artistic depth
+      as a trained musician and keyboardist.
+    </p>
 
-<p>
-Beyond software engineering, I actively engage global audiences
-through platforms such as YouTube and Spotify, where technology
-and music converge to deliver meaningful storytelling and creative expression.
-I strive to build solutions and experiences that not only solve complex
-problems but also inspire, connect, and create lasting impact.
+    <p>
+      My journey uniquely combines analytical problem-solving with
+      creative expression, enabling me to bridge structured engineering
+      principles with human-centered artistic experiences. From
+      performing classical symphonic compositions to designing and
+      developing production-grade software systems, my work reflects
+      a commitment to innovation, precision, and growth.
+    </p>
 
-Driven by curiosity and craftsmanship, I aim to merge engineering excellence,
-artistic vision, and innovation into a unified creative philosophy.
-</p>
-</p>
+    <p>
+      Beyond software engineering, I actively engage global audiences
+      through platforms such as YouTube and Spotify where technology
+      and music converge to deliver meaningful storytelling and
+      creative expression. Driven by curiosity and craftsmanship,
+      I aim to merge engineering excellence, artistic vision,
+      and innovation into a unified creative philosophy.
+    </p>
+
+  </div>
+
+  {/* BUTTON */}
+  <button
+    type="button"
+    className={styles.readMoreBtn}
+    onClick={() => setExpanded(prev => !prev)}
+  >
+    {expanded ? "Show Less" : "Read More"}
+  </button>
 
 </div>
 
