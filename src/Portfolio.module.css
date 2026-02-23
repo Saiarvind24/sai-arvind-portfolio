@@ -221,10 +221,11 @@ html,body{
   transition:.5s ease;
 }
 .projectText{
-  max-width:850px;
+  width:100%;
+   max-width:820px;
   margin:25px 150px 25px 150px;
   line-height:1.5;
-  text-align:justify;
+  text-align:left;
     color:#ffffff;
     font-size: 18px;;
 }
@@ -283,6 +284,16 @@ html,body{
     0 0 20px rgba(0,212,255,.15);
 
   transition:.4s;
+}
+.textProjectCard{
+
+  width:100%;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;   
+  text-align: left;/* ✅ TRUE CENTER */
+
 }
 
 /* floating animation */
@@ -2299,6 +2310,34 @@ img{
 
   border-radius:18px;
 
+}
+
+}
+/* =====================================================
+   ✅ RESTORE PROFESSIONAL TEXT ALIGNMENT
+===================================================== */
+
+.projectText{
+
+  max-width:820px;
+  margin-left:auto;
+  margin-right:auto;
+
+  text-align:left;
+  line-height:1.6;
+
+}
+@media (max-width:768px){
+
+.projectText{
+
+  max-width:520px;
+
+  padding-left:18px;
+  padding-right:18px;
+
+  margin-left:auto;
+  margin-right:auto;
 }
 
 }

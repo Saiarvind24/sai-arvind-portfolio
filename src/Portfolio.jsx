@@ -352,7 +352,6 @@ operational reliability.
       : styles.projectText
   }
 >
-
     <p>
       Engineered a production-grade ticketing platform for a
       large-scale university cultural event supporting over
