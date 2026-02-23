@@ -2313,9 +2313,7 @@ img{
 }
 
 }
-/* =====================================================
-   ✅ RESTORE PROFESSIONAL TEXT ALIGNMENT
-===================================================== */
+/*RESTORE PROFESSIONAL TEXT ALIGNMENT*/
 
 .projectText{
 
@@ -2341,7 +2339,7 @@ img{
 }
 
 }/* ===============================
-   AUTO HIDE AWS INFO BAR
+AUTO HIDE AWS INFO BAR
 =============================== */
 .awsBar{
   position:fixed;
@@ -2377,10 +2375,10 @@ img{
   pointer-events:none;
 }
 /* =========================================
-   ✅ MOBILE + TABLET AWS BAR FIX
+✅ MOBILE + TABLET AWS BAR FIX
 ========================================= */
 /* ===============================
-   AWS BAR RESPONSIVE FIX
+AWS BAR RESPONSIVE FIX
 ================================= */
 
 @media (max-width: 768px){
