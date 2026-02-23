@@ -147,7 +147,7 @@ useEffect(() => {
   </div>
 </div>
 
-{/* ================= NAV ================= */}
+{ /* ================= NAV ================= */}
 <header className={styles.globalHeader}>
 
 
