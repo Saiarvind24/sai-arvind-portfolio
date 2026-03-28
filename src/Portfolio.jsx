@@ -25,11 +25,24 @@ const navLabels = {
   ENQUIRY: "Contact",
 };
 
+const bootLines = [
+  "> Booting Sai Arvind System...",
+  "> Loading Problem Solving Modules...",
+  "> Initializing Scalable Architecture Thinking...",
+  "> Connecting Creativity Engine...",
+  "> Running Clean Code Protocols...",
+  "> Ready.",
+];
+
 export default function SaiArvindPortfolio() {
 
   const [activeSection, setActiveSection] = useState("OVERVIEW");
   const [expanded, setExpanded] = useState(false);
   const [showAwsBar, setShowAwsBar] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [bootPhase, setBootPhase] = useState("boot");
+  const [visibleLines, setVisibleLines] = useState(0);
+  const [lightboxSrc, setLightboxSrc] = useState(null);
 
   const formRef = useRef();
   const sendEmail = (e) => {
@@ -37,10 +50,10 @@ export default function SaiArvindPortfolio() {
 
   emailjs
     .sendForm(
-      "service_obo7wp7",     // ✅ your service ID
-      "template_vxm8oyb",      // ✅ replace with template ID
+      "service_obo7wp7",
+      "template_vxm8oyb",
       formRef.current,
-      "RcjRcMbd_c4u1Hicl"      // ✅ replace with public key
+      "RcjRcMbd_c4u1Hicl"
     )
     .then(
       () => {
@@ -66,6 +79,22 @@ export default function SaiArvindPortfolio() {
       behavior: "smooth"
     });
   };
+
+  /* ========= BOOT SEQUENCE ========= */
+  useEffect(() => {
+    const lineTimers = bootLines.map((_, i) =>
+      setTimeout(() => setVisibleLines(i + 1), i * 500)
+    );
+    const awsTimer = setTimeout(() => setBootPhase("aws"), 3000);
+    const fadeTimer = setTimeout(() => setBootPhase("fadeout"), 4500);
+    const doneTimer = setTimeout(() => setLoading(false), 5000);
+    return () => {
+      lineTimers.forEach(clearTimeout);
+      clearTimeout(awsTimer);
+      clearTimeout(fadeTimer);
+      clearTimeout(doneTimer);
+    };
+  }, []);
 
   /* ========= ACTIVE NAV ========= */
 useEffect(() => {
@@ -106,18 +135,16 @@ useEffect(() => {
         }
       });
 
-      /* ✅ NAV ACTIVE */
       if (currentSectionRef !== closestSection) {
         currentSectionRef = closestSection;
         setActiveSection(closestSection);
       }
 
-      /* ✅ AWS BAR SHOW / HIDE */
       const currentScroll = window.scrollY;
 
       if (currentScroll > lastScrollY + 8) {
         setShowAwsBar(false);
-      } 
+      }
       else if (currentScroll < lastScrollY - 8) {
         setShowAwsBar(true);
       }
@@ -143,6 +170,38 @@ useEffect(() => {
 
   return (
 <div className={styles.cyberContainer}>
+
+  {/* ================= BOOT SCREEN ================= */}
+  {loading && (
+    <div className={`${styles.bootOverlay} ${bootPhase === "fadeout" ? styles.bootFadeOut : ""}`}>
+      {bootPhase === "boot" && (
+        <div className={styles.bootTerminal}>
+          {bootLines.map((line, i) => (
+            <div
+              key={i}
+              className={`${styles.bootLine} ${i < visibleLines ? styles.bootLineVisible : ""} ${line === "> Ready." ? styles.bootReady : ""}`}
+            >
+              {line}
+            </div>
+          ))}
+        </div>
+      )}
+      {bootPhase === "aws" && (
+        <div className={styles.bootAwsMessage}>
+          This Site is Deployed on AWS Cloud Infrastructure
+        </div>
+      )}
+    </div>
+  )}
+
+  {/* ================= LIGHTBOX ================= */}
+  {lightboxSrc && (
+    <div className={styles.lightboxOverlay} onClick={() => setLightboxSrc(null)}>
+      <button className={styles.lightboxClose} onClick={() => setLightboxSrc(null)}>&times;</button>
+      <img src={lightboxSrc} className={styles.lightboxImage} onClick={(e) => e.stopPropagation()} />
+    </div>
+  )}
+
   <div className={styles.backgroundFX}>
     </div>
 
@@ -156,7 +215,7 @@ useEffect(() => {
   </div>
 </div>
 
-{ /* ================= NAV ================= */}
+{ /* ================= NAV ================= */ }
 <header className={styles.globalHeader}>
 
 
@@ -188,7 +247,7 @@ HIRE ME
 className={`${styles.mainLayout}
 ${showAwsBar ? styles.awsOffset : ""}`}
 >
-  
+
 
 {/* ========= HERO ========= */}
 <motion.section
@@ -210,13 +269,14 @@ className={styles.heroImage}
 
 <h1>SAI ARVIND VS</h1>
 <p className={styles.heroStatement}>
-I don’t want to be just another software engineer.
+I don't want to be just another software engineer.
 I want to be a builder of things that matter,
 a creator of experiences that resonate,
 and a catalyst for innovation that shapes the future.
 With a passion for technology and a drive to make an impact,
 I am on a mission to build products that not only solve problems
-but also inspire and empower people around the world.</p>
+but also inspire and empower people around the world.
+</p>
 
 <div className={styles.socialRow}>
 <a href="https://github.com/Saiarvind24"><img src="./github-icon-2.svg"/></a>
@@ -251,44 +311,44 @@ What I've Been Building?
 
 <div className={styles.projectTitleBox}>
   <h1 className={styles.projectTitle}>
-  LINGOBRIDGE</h1>
+  LingoBridge</h1>
   </div>
 
-<div className={styles.projectContentBox}>
+<div className={styles.mediaWrapper}>
+<div className={styles.mediaGlow}></div>
 
-<div className={styles.projectBodyText} style={{marginBottom: '24px'}}>
-<p>
-After months of "quick fixes" that were anything but quick, endless coffee-fueled debugging sessions, and questioning every life decision that led us here — we finally built LingoBridge, a multilingual communication platform which is fully functional.
+<div className={styles.projectGallery}>
+<img src="./lingo 1.jpg" onClick={() => setLightboxSrc("./lingo 1.jpg")}/>
+<img src="./lingo 2.jpg" onClick={() => setLightboxSrc("./lingo 2.jpg")}/>
+<img src="./lingo 3.jpg" onClick={() => setLightboxSrc("./lingo 3.jpg")}/>
+<img src="./lingo 4.jpg" onClick={() => setLightboxSrc("./lingo 4.jpg")}/>
+<img src="./lingo 6.jpg" onClick={() => setLightboxSrc("./lingo 6.jpg")}/>
+<img src="./lingo 7.jpg" onClick={() => setLightboxSrc("./lingo 7.jpg")}/>
+</div>
+</div>
+
+<div className={styles.projectContentBox}>
+<p className={styles.projectBodyText}>
+Ever tried talking to someone who speaks a completely different language — and wished
+your app could just handle it? That's exactly what LingoBridge does. It's a cloud-native
+multilingual communication platform that breaks down language barriers in real time,
+powered by Spring Boot on the backend and Azure AI for smart translations.
 </p>
 
 <div className={styles.projectFeatureList}>
-<p><span className={styles.featureIcon}>🌐</span> Real-time translation for text, audio & docs</p>
-<p><span className={styles.featureIcon}>🎙️</span> Speech-to-text with instant translation</p>
-<p><span className={styles.featureIcon}>📄</span> Document & media uploads with transcripts & translations</p>
-<p><span className={styles.featureIcon}>🔒</span> OTP-based registration, custom language settings, per-user chat deletion</p>
-<p><span className={styles.featureIcon}>⚡</span> Translation latency reduced by ~60% using Azure Cognitive Services</p>
-<p><span className={styles.featureIcon}>✅</span> ~95% accuracy in testing — the other 5% is just character-building</p>
-</div>
+<p>🌍 Real-time translation across 100+ languages</p>
+<p>☁️ Cloud-native architecture with Azure Cognitive Services</p>
+<p>🧪 Automated testing pipelines for resilient deployments</p>
+<p>⚡ Low-latency API design with Spring Boot</p>
 </div>
 
-<div className={styles.projectGallery}>
-<img src="./lingo 1.jpg"/>
-<img src="./lingo 2.jpg"/>
-<img src="./lingo 3.jpg"/>
-<img src="./lingo 4.jpg"/>
-<img src="./lingo 6.jpg"/>
-<img src="./lingo 7.jpg"/>
+<div className={styles.tagRow}>
+  <span className={styles.tag}>Spring Boot</span>
+  <span className={styles.tag}>Azure AI</span>
+  <span className={styles.tag}>REST APIs</span>
+  <span className={styles.tag}>CI/CD</span>
+  <span className={styles.tag}>Cloud Native</span>
 </div>
-
-<div className={styles.tagRow} style={{marginTop: '24px'}}>
-<span className={styles.tag}>Spring Boot</span>
-<span className={styles.tag}>Azure AI</span>
-<span className={styles.tag}>React</span>
-<span className={styles.tag}>REST APIs</span>
-<span className={styles.tag}>CI/CD</span>
-<span className={styles.tag}>Cloud</span>
-</div>
-
 </div>
 
 </div>
@@ -299,14 +359,17 @@ After months of "quick fixes" that were anything but quick, endless coffee-fuele
 {/* ===== REAL TIME AI ===== */}
 <div className={styles.projectShowcase}>
 
+
 <div className={styles.projectTitleBox}>
   <h1 className={styles.projectTitle}>
-  REAL-TIME VISUAL AI INFERENCE</h1>
+  Real-Time Visual AI Inference</h1>
   </div>
 
 <div className={styles.projectContentBox}>
 
 <div className={styles.projectContentLeft}>
+<div className={styles.mediaWrapper}>
+<div className={styles.mediaGlow}></div>
 <motion.video
 className={styles.projectMedia}
 autoPlay
@@ -320,30 +383,67 @@ transition={{duration:.8}}
 <source src="./Linkdn post .mov" type="video/mp4"/>
 </motion.video>
 </div>
+</div>
 
 <div className={styles.projectContentRight}>
 <p className={styles.projectBodyText}>
-This work demonstrates the capability and efficiency of running modern multimodal AI models locally, with all processing handled on-device for maximum speed and privacy. The objective was to architect a low-latency system where the AI could continuously analyze a video stream and provide immediate, relevant descriptions of the scene.
+A high-performance multimodal AI system that sees and understands the world in real time.
+Built from the ground up with CUDA-accelerated GPU pipelines, this project pushes the
+boundaries of what's possible with on-device visual inference — no cloud needed.
 </p>
 
 <div className={styles.projectTechDetails}>
 <h4>Technical Architecture</h4>
 <ul>
-<li><strong>Backend:</strong> llama.cpp serves as the high-performance inference engine. By offloading the model's 33 layers entirely to an NVIDIA RTX 3050 GPU, the system achieves rapid response times.</li>
-<li><strong>AI Model:</strong> HuggingFace's SmolVLM-500M, a compact and effective multimodal model for vision-language tasks.</li>
-<li><strong>Frontend:</strong> Built with React and Vite — manages the webcam feed, sends frames to the local server, and displays AI-generated captions.</li>
-<li><strong>API & Connection:</strong> Engineered API communication between frontend and backend, resolving CORS challenges for a stable connection.</li>
+<li>CUDA-optimized inference pipeline with custom kernel execution</li>
+<li>Multi-model orchestration for simultaneous visual + language processing</li>
+<li>Real-time frame capture and analysis at 30+ FPS</li>
+<li>Zero-latency local execution — no API calls, no cloud dependency</li>
 </ul>
 </div>
 
 <div className={styles.tagRow}>
-<span className={styles.tag}>CUDA</span>
-<span className={styles.tag}>llama.cpp</span>
-<span className={styles.tag}>React</span>
-<span className={styles.tag}>Vite</span>
-<span className={styles.tag}>SmolVLM</span>
-<span className={styles.tag}>GPU Inference</span>
-<span className={styles.tag}>CMake</span>
+  <span className={styles.tag}>Python</span>
+  <span className={styles.tag}>CUDA</span>
+  <span className={styles.tag}>GPU Computing</span>
+  <span className={styles.tag}>Computer Vision</span>
+  <span className={styles.tag}>LLM</span>
+</div>
+</div>
+
+</div>
+</div>
+
+<div className={styles.projectDivider}></div>
+
+{/* ===== MEDICAL CHATBOT ===== */}
+<div className={styles.projectShowcase}>
+
+<div className={styles.projectTitleBox}>
+  <h1 className={styles.projectTitle}>
+Medical Assistant Chatbot
+</h1>
+</div>
+
+<div className={styles.textProjectGrid}>
+
+<div className={styles.textProjectBox}>
+<p className={styles.textProjectDesc}>
+Designed and developed an intelligent medical assistant focused on seamless
+human–computer interaction through a responsive React interface. The system
+integrates Natural Language Processing models trained using TensorFlow,
+enabling accurate understanding and resolution of user health queries.
+Emotion-aware conversational responses were implemented using Transformer
+architectures and OpenAI APIs, allowing adaptive behaviour based on detected
+user sentiment while maintaining structured deployment and long-term
+operational reliability.
+</p>
+<div className={styles.tagRow}>
+  <span className={styles.tag}>NLP</span>
+  <span className={styles.tag}>React</span>
+  <span className={styles.tag}>TensorFlow</span>
+  <span className={styles.tag}>Transformers</span>
+  <span className={styles.tag}>OpenAI API</span>
 </div>
 </div>
 
@@ -353,74 +453,61 @@ This work demonstrates the capability and efficiency of running modern multimoda
 
 <div className={styles.projectDivider}></div>
 
-{/* ===== TEXT PROJECT CARDS GRID ===== */}
+{/* ===== FREELANCE ===== */}
+<div className={styles.projectShowcase}>
+
+<div className={styles.projectTitleBox}>
+  <h1 className={styles.projectTitle}>
+    Freelance Software Engineer
+  </h1>
+</div>
+
 <div className={styles.textProjectGrid}>
 
-{/* MEDICAL ASSISTANT */}
 <div className={styles.textProjectBox}>
-  <h3 className={styles.textProjectTitle}>Medical Assistant Chatbot</h3>
+<h3 className={styles.textProjectTitle}>Freelance Software Engineer</h3>
+<span className={styles.textProjectMeta}>Independent Client Delivery | Jan 2023 – Jun 2024</span>
+
+<div className={styles.subProject}>
+  <h4 className={styles.subProjectTitle}>Ticketing Platform — AWS Cloud System</h4>
+  <span className={styles.subProjectRole}>Head of Core Committee</span>
   <p className={styles.textProjectDesc}>
-    Designed and developed an intelligent medical assistant
-    focused on seamless human-computer interaction through a
-    responsive React interface. The system integrates NLP models
-    trained using TensorFlow, enabling accurate understanding of
-    user health queries with emotion-aware conversational responses
-    powered by Transformer architectures and OpenAI APIs.
+    Led end-to-end build of a serverless-inspired AWS event platform supporting
+    5,000+ global attendees. Engineered secure checkout workflows with Stripe,
+    real-time ticket generation, and infrastructure deployed on AWS with Elastic
+    Load Balancing and Auto Scaling, achieving 99.9% uptime during high-concurrency launches.
   </p>
   <div className={styles.tagRow}>
-    <span className={styles.tag}>NLP</span>
-    <span className={styles.tag}>React</span>
-    <span className={styles.tag}>TensorFlow</span>
-    <span className={styles.tag}>Transformers</span>
-    <span className={styles.tag}>OpenAI API</span>
+    <span className={styles.tag}>AWS</span>
+    <span className={styles.tag}>EC2</span>
+    <span className={styles.tag}>Docker</span>
+    <span className={styles.tag}>Stripe</span>
+    <span className={styles.tag}>NoSQL</span>
+    <span className={styles.tag}>Auto Scaling</span>
   </div>
 </div>
 
-{/* FREELANCE SOFTWARE ENGINEER */}
-<div className={styles.textProjectBox}>
-  <h3 className={styles.textProjectTitle}>Freelance Software Engineer</h3>
-  <span className={styles.textProjectMeta}>Independent Client Delivery | Jan 2023 – Jun 2024</span>
+<div className={styles.subProjectDivider}></div>
 
-  <div className={styles.subProjectRow}>
-  <div className={styles.subProject}>
-    <h4 className={styles.subProjectTitle}>Ticketing Platform — AWS Cloud System</h4>
-    <span className={styles.subProjectRole}>Head of Core Committee</span>
-    <p className={styles.textProjectDesc}>
-      Led end-to-end build of a serverless-inspired AWS event platform — owning
-      authentication, authorization, messaging queues, error handling, and distributed
-      data persistence, with a celebrity announcement driving unexpected viral demand.
-      Architected a highly available AWS system (EC2, ELB, Auto Scaling) with Stripe
-      payment gateway, NoSQL data persistence, deployment automation, and Docker —
-      implemented system monitoring, performance optimisation, and infrastructure
-      scaling to absorb a 45x surge to 90,000 users with zero downtime.
-    </p>
-  </div>
-
-  <div className={styles.subProject}>
-    <h4 className={styles.subProjectTitle}>Farmvalli Organics — Cloud-Based E-Commerce Platform</h4>
-    <p className={styles.textProjectDesc}>
-      Owned delivery of a globally distributed client platform — responsible for
-      enterprise API design, relational and NoSQL data persistence, authentication
-      flows, and translating business requirements into scalable backend architecture.
-      Delivered well-tested, documented code using Java, Python, Node.js, REST APIs,
-      and Jenkins CI/CD — implementing error handling, secure authentication,
-      messaging-driven workflows, and agile delivery with continuous improvement
-      of system performance and maintainability.
-    </p>
-  </div>
-  </div>
-
+<div className={styles.subProject}>
+  <h4 className={styles.subProjectTitle}>Farmvalli Organics — Cloud-Based E-Commerce Platform</h4>
+  <p className={styles.textProjectDesc}>
+    Owned delivery of a globally distributed client platform powering organic product
+    commerce. Built scalable REST APIs, integrated CI/CD pipelines with Jenkins,
+    and managed end-to-end deployment across cloud infrastructure.
+  </p>
   <div className={styles.tagRow}>
     <span className={styles.tag}>Java</span>
     <span className={styles.tag}>Python</span>
     <span className={styles.tag}>Node.js</span>
-    <span className={styles.tag}>AWS</span>
-    <span className={styles.tag}>Docker</span>
-    <span className={styles.tag}>CI/CD</span>
-    <span className={styles.tag}>Stripe</span>
-    <span className={styles.tag}>NoSQL</span>
     <span className={styles.tag}>REST APIs</span>
+    <span className={styles.tag}>CI/CD</span>
+    <span className={styles.tag}>Jenkins</span>
   </div>
+</div>
+
+</div>
+
 </div>
 
 </div>
@@ -455,8 +542,8 @@ className={styles.glassCard}
 
 
 <p>
-Key Modules – Software Engineering, Generative AI, Cloud Computing, ML In Python, Ds in Python, Data 
-Programming With R, Big Data Programming, Information Visualisation 
+Key Modules – Software Engineering, Generative AI, Cloud Computing, ML In Python, Ds in Python, Data
+Programming With R, Big Data Programming, Information Visualisation
 </p>
 
 <span>2024 — 2025</span>
@@ -477,7 +564,7 @@ Programming With R, Big Data Programming, Information Visualisation
 <h4>B.E Computer Science & Engineering | CGPA: 7.9/10 - 2:1</h4>
 
 <p>
-Key Modules – Object-oriented Programming, Artificial Intelligence, Cloud Computing, ML, Probability and 
+Key Modules – Object-oriented Programming, Artificial Intelligence, Cloud Computing, ML, Probability and
 queuing theory, Data Structures, DBMS, Distributed Systems
 </p>
 
@@ -518,7 +605,7 @@ className={styles.glassCard}
 
 {/* LINKEDIN */}
 <div className={styles.certCard}>
-  
+
   <div className={styles.certLogoWrapper}>
   <img src="./Linkedin learning logo.png" alt="LinkedIn Learning"/>
   </div>
@@ -809,9 +896,9 @@ at Kumara Raja Muthaiah Hall, Chennai, Tamil Nadu.
 </div>
 <h3>Trinity College London</h3>
 <p>
-I take pride in the successful completion, from Grade 1 to Grade 7, with merit certifications awarded by Trinity College of London. This achievement reflects my dedication to musical excellence and consistent progress in mastering the keyboard.
+I take pride in the successful completion, from Grade 1 to Grade 7, with merit certifications awarded by Trinity College of London. This achievement reflects my dedication to musical excellence and consistent progress in mastering the keyboard,
 </p>
-<p>— Sai Arvind</p>
+<p className={styles.quoteText}>— Sai Arvind</p>
 </div>
 
 <div className={styles.achievementCard}>
@@ -820,7 +907,7 @@ I take pride in the successful completion, from Grade 1 to Grade 7, with merit c
 </div>
 <h3>500K+ Streams</h3>
 <p>
-Global digital distribution impact.Independently scaled a music production project to 500,000+ total streams.</p>
+Global digital distribution impact. Independently scaled a music production project to 500,000+ total streams.</p>
 <p>Global Content Distribution: Successfully reached listeners in 123 countries, with high engagement in the USA, UK, and India.</p>
 </div>
 
@@ -909,7 +996,7 @@ SEND MESSAGE
 
 <footer className={styles.footerGlass}>
   <p className={styles.footerText}>
-    © 2026 — Designed & Developed by 
+    © 2026 — Designed & Developed by
     <span> Sai Arvind</span>
   </p>
 

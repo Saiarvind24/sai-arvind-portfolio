@@ -20,6 +20,73 @@
 }
 
 
+/* ================= BOOT LOADING SCREEN ================= */
+
+.bootOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-deep);
+  transition: opacity 0.5s ease;
+}
+
+.bootFadeOut {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.bootTerminal {
+  max-width: 600px;
+  width: 90%;
+  padding: 40px;
+}
+
+.bootLine {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  font-size: 15px;
+  line-height: 2.2;
+  color: var(--accent);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.bootLineVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.bootReady {
+  color: #4ade80;
+  font-weight: 700;
+  font-size: 17px;
+}
+
+.bootAwsMessage {
+  text-align: center;
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: 1px;
+  animation: awsFadeIn 0.8s ease forwards;
+}
+
+@keyframes awsFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+
 /* ================= RESET ================= */
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -129,13 +196,13 @@ img, video {
 
 .awsBar {
   position: fixed;
-  top: 70px;
+  top: 60px;
   left: 0;
   width: 100%;
   text-align: center;
   z-index: 999;
-  padding: 10px 16px;
-  font-size: 15px;
+  padding: 8px 14px;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.8px;
   color: var(--white);
@@ -158,12 +225,12 @@ img, video {
   top: 0;
   left: 0;
   right: 0;
-  height: 70px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 24px;
-  padding: 0 40px;
+  gap: 20px;
+  padding: 0 36px;
   backdrop-filter: var(--blur);
   background: rgba(10, 22, 40, 0.75);
   border-bottom: 1px solid var(--glass-border);
@@ -179,12 +246,12 @@ img, video {
 }
 
 .navItem {
-  padding: 12px 22px;
+  padding: 9px 18px;
   border-radius: var(--r-sm);
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.6px;
   text-transform: uppercase;
   color: var(--white-dim);
   transition: all 0.25s ease;
@@ -202,13 +269,13 @@ img, video {
 }
 
 .hireBtn {
-  padding: 12px 28px;
+  padding: 9px 22px;
   border-radius: var(--r-sm);
   border: 1px solid rgba(0, 212, 255, 0.35);
   background: transparent;
   color: var(--accent);
   font-family: inherit;
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: 1px;
   cursor: pointer;
@@ -252,9 +319,9 @@ img, video {
 }
 
 .heroCard {
-  max-width: 900px;
+  max-width: 800px;
   width: 100%;
-  padding: 60px 56px;
+  padding: 48px 44px;
   background: var(--glass);
   backdrop-filter: var(--blur);
   border: 1px solid var(--glass-border);
@@ -265,7 +332,7 @@ img, video {
 }
 
 .heroSection h1 {
-  font-size: 48px;
+  font-size: 42px;
   font-weight: 700;
   letter-spacing: 1px;
   margin: 24px 0 0;
@@ -275,8 +342,8 @@ img, video {
 }
 
 .heroImage {
-  width: 200px;
-  height: 200px;
+  width: 180px;
+  height: 180px;
   object-fit: cover;
   border-radius: var(--r-lg);
   box-shadow:
@@ -286,9 +353,9 @@ img, video {
 }
 
 .heroStatement {
-  max-width: 700px;
-  margin: 24px auto 0;
-  font-size: 18px;
+  max-width: 640px;
+  margin: 20px auto 0;
+  font-size: 16px;
   line-height: 1.8;
   color: var(--white-soft);
   text-align: center;
@@ -342,10 +409,10 @@ img, video {
 
 .sectionTitle {
   text-align: center;
-  font-size: 36px;
+  font-size: 32px;
   font-weight: 700;
   letter-spacing: 0.5px;
-  margin-bottom: 44px;
+  margin-bottom: 36px;
   color: var(--white);
   text-transform: uppercase;
 }
@@ -359,7 +426,7 @@ img, video {
 }
 
 .projectShowcase h2 {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 400;
   color: var(--white-soft);
   line-height: 1.75;
@@ -374,13 +441,13 @@ img, video {
 }
 
 .projectTitle {
-  padding: 16px 40px;
+  padding: 12px 32px;
   border-radius: var(--r-md);
   background: rgba(255, 255, 255, 0.06);
   backdrop-filter: var(--blur);
   border: 1px solid var(--glass-border);
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 700;
   text-align: center;
   text-transform: uppercase;
@@ -405,7 +472,7 @@ img, video {
 /* ===== PROJECT CONTENT BOX (glass box layout) ===== */
 
 .projectContentBox {
-  padding: 40px;
+  padding: 32px;
   border-radius: var(--r-lg);
   background: var(--glass);
   backdrop-filter: var(--blur);
@@ -430,7 +497,7 @@ img, video {
 }
 
 .projectBodyText {
-  font-size: 17px;
+  font-size: 15px;
   line-height: 1.8;
   color: var(--white-soft);
   margin: 0 0 24px;
@@ -445,7 +512,7 @@ img, video {
 }
 
 .projectTechDetails h4 {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--white);
   margin: 0 0 12px;
@@ -459,7 +526,7 @@ img, video {
 }
 
 .projectTechDetails li {
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1.75;
   color: var(--white-soft);
   padding: 6px 0;
@@ -485,7 +552,7 @@ img, video {
 }
 
 .projectFeatureList p {
-  font-size: 17px;
+  font-size: 15px;
   line-height: 1.6;
   color: var(--white-soft);
   margin: 10px 0;
@@ -496,7 +563,7 @@ img, video {
 
 .featureIcon {
   flex-shrink: 0;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 /* ===== MEDIA ===== */
@@ -571,6 +638,54 @@ img, video {
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
 }
 
+.projectGallery img {
+  cursor: pointer;
+}
+
+
+/* ===== IMAGE LIGHTBOX ===== */
+
+.lightboxOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.92);
+  backdrop-filter: blur(10px);
+  padding: 20px;
+  animation: awsFadeIn 0.3s ease;
+}
+
+.lightboxImage {
+  max-width: 90vw;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: var(--r-md);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+.lightboxClose {
+  position: absolute;
+  top: 20px;
+  right: 28px;
+  background: none;
+  border: none;
+  color: var(--white);
+  font-size: 36px;
+  font-weight: 300;
+  cursor: pointer;
+  line-height: 1;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.lightboxClose:hover {
+  opacity: 1;
+}
+
+
 /* ===== PROJECT TEXT ===== */
 
 .projectText {
@@ -610,7 +725,7 @@ img, video {
 }
 
 .textProjectBox {
-  padding: 32px;
+  padding: 28px;
   border-radius: var(--r-lg);
   background: var(--glass);
   backdrop-filter: var(--blur);
@@ -618,6 +733,7 @@ img, video {
   transition: all 0.35s ease;
   display: flex;
   flex-direction: column;
+  text-align: left;
 }
 
 .textProjectBox:hover {
@@ -628,29 +744,32 @@ img, video {
 }
 
 .textProjectTitle {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 700;
   color: var(--white);
   margin: 0 0 16px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
+  text-align: left;
 }
 
 .textProjectDesc {
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1.75;
   color: var(--white-soft);
   margin: 0 0 24px;
   flex: 1;
+  text-align: left;
 }
 
 .textProjectMeta {
   display: block;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--accent);
   margin-bottom: 20px;
   letter-spacing: 0.2px;
+  text-align: left;
 }
 
 .subProjectRow {
@@ -666,20 +785,29 @@ img, video {
   border-left: 2px solid rgba(255, 255, 255, 0.1);
 }
 
+.subProjectDivider {
+  width: 100%;
+  height: 1px;
+  margin: 32px 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+}
+
 .subProjectTitle {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--white);
   margin: 0 0 4px;
+  text-align: left;
 }
 
 .subProjectRole {
   display: block;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--white-dim);
   margin-bottom: 8px;
   letter-spacing: 0.2px;
+  text-align: left;
 }
 
 .subProject .textProjectDesc {
@@ -694,8 +822,8 @@ img, video {
 }
 
 .tag {
-  padding: 6px 16px;
-  font-size: 14px;
+  padding: 5px 14px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: 0.3px;
   color: var(--white);
@@ -838,7 +966,7 @@ img, video {
 
 .educationContent h3 {
   margin: 0;
-  font-size: 21px;
+  font-size: 18px;
   font-weight: 600;
   color: var(--white);
 }
@@ -846,21 +974,21 @@ img, video {
 .educationContent h4 {
   margin: 6px 0 14px;
   color: var(--white-dim);
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
 }
 
 .educationContent p {
   line-height: 1.7;
   color: var(--white-soft);
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .educationContent span {
   display: block;
   margin-top: 12px;
   color: var(--accent);
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 500;
 }
 
@@ -891,14 +1019,14 @@ img, video {
 }
 
 .certCard h3 {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   margin-bottom: 10px;
   color: var(--white);
 }
 
 .certCard p {
-  font-size: 15px;
+  font-size: 14px;
   color: var(--white-soft);
   line-height: 1.75;
 }
@@ -949,7 +1077,7 @@ img, video {
 
 .skillCard {
   text-align: center;
-  padding: 32px 20px;
+  padding: 24px 16px;
   border-radius: var(--r-lg);
   background: var(--glass);
   backdrop-filter: var(--blur);
@@ -964,7 +1092,7 @@ img, video {
 }
 
 .skillCard h3 {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--white);
   margin: 0;
@@ -979,8 +1107,8 @@ img, video {
 }
 
 .skillCard img {
-  width: 70px;
-  height: 70px;
+  width: 56px;
+  height: 56px;
   object-fit: contain;
 }
 
@@ -1041,10 +1169,10 @@ img, video {
 }
 
 .artistParagraph {
-  max-width: 760px;
+  max-width: 700px;
   margin: 0 auto;
   line-height: 1.8;
-  font-size: 17px;
+  font-size: 15px;
   color: var(--white-soft);
   text-align: left;
 }
@@ -1079,7 +1207,7 @@ img, video {
 }
 
 .achievementCard h3 {
-  font-size: 19px;
+  font-size: 17px;
   font-weight: 600;
   color: var(--white);
   margin-bottom: 4px;
@@ -1098,7 +1226,7 @@ img, video {
   line-height: 1.75;
   color: var(--white-soft);
   margin-top: 12px;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .achievementCard img { width: 50px; margin-bottom: 14px; }
