@@ -43,6 +43,7 @@ export default function SaiArvindPortfolio() {
   const [bootPhase, setBootPhase] = useState("boot");
   const [visibleLines, setVisibleLines] = useState(0);
   const [lightboxSrc, setLightboxSrc] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const formRef = useRef();
   const sendEmail = (e) => {
@@ -218,12 +219,19 @@ useEffect(() => {
 { /* ================= NAV ================= */ }
 <header className={styles.globalHeader}>
 
+<button
+className={styles.hamburger}
+onClick={() => setMenuOpen(prev => !prev)}
+aria-label="Toggle menu"
+>
+{menuOpen ? "✕" : "☰"}
+</button>
 
-<nav className={styles.navDock}>
+<nav className={`${styles.navDock} ${menuOpen ? styles.navOpen : ""}`}>
 {sections.map(sec => (
 <div
 key={sec}
-onClick={()=>scrollToSection(sec)}
+onClick={() => { scrollToSection(sec); setMenuOpen(false); }}
 className={`${styles.navItem}
 ${activeSection===sec?styles.activeNav:""}`}
 >
@@ -329,17 +337,18 @@ What I've Been Building?
 
 <div className={styles.projectContentBox}>
 <p className={styles.projectBodyText}>
-Ever tried talking to someone who speaks a completely different language — and wished
-your app could just handle it? That's exactly what LingoBridge does. It's a cloud-native
-multilingual communication platform that breaks down language barriers in real time,
-powered by Spring Boot on the backend and Azure AI for smart translations.
+After months of "quick fixes" that were anything but quick, endless coffee-fueled debugging sessions,
+and questioning every life decision that led us here – we finally built LingoBridge, a multilingual
+communication platform which is fully functional.
 </p>
 
 <div className={styles.projectFeatureList}>
-<p>🌍 Real-time translation across 100+ languages</p>
-<p>☁️ Cloud-native architecture with Azure Cognitive Services</p>
-<p>🧪 Automated testing pipelines for resilient deployments</p>
-<p>⚡ Low-latency API design with Spring Boot</p>
+<p>🌐 Real-time translation for text, audio & docs</p>
+<p>🎙️ Speech-to-text with instant translation</p>
+<p>📄 Document & media uploads with transcripts & translations</p>
+<p>🔒 OTP-based registration, custom language settings, per-user chat deletion</p>
+<p>⚡ Translation latency reduced by ~60% using Azure Cognitive Services</p>
+<p>✅ ~95% accuracy in testing</p>
 </div>
 
 <div className={styles.tagRow}>
@@ -348,6 +357,7 @@ powered by Spring Boot on the backend and Azure AI for smart translations.
   <span className={styles.tag}>REST APIs</span>
   <span className={styles.tag}>CI/CD</span>
   <span className={styles.tag}>Cloud Native</span>
+  <span className={styles.tag}>Speech-to-Text</span>
 </div>
 </div>
 
@@ -387,20 +397,25 @@ transition={{duration:.8}}
 
 <div className={styles.projectContentRight}>
 <p className={styles.projectBodyText}>
-A high-performance multimodal AI system that sees and understands the world in real time.
-Built from the ground up with CUDA-accelerated GPU pipelines, this project pushes the
-boundaries of what's possible with on-device visual inference — no cloud needed.
+The objective was to architect a low-latency system where the AI could continuously analyze
+a video stream and provide immediate, relevant descriptions of the scene.
 </p>
 
 <div className={styles.projectTechDetails}>
 <h4>Technical Architecture</h4>
 <ul>
-<li>CUDA-optimized inference pipeline with custom kernel execution</li>
-<li>Multi-model orchestration for simultaneous visual + language processing</li>
-<li>Real-time frame capture and analysis at 30+ FPS</li>
-<li>Zero-latency local execution — no API calls, no cloud dependency</li>
+<li><strong>Backend:</strong> llama.cpp serves as the high-performance inference engine. By offloading the model's 33 layers entirely to an NVIDIA RTX 3050 GPU, the system achieves rapid response times.</li>
+<li><strong>AI Model:</strong> The implementation uses HuggingFace's SmolVLM-500M, a compact and effective multimodal model for this vision-language task.</li>
+<li><strong>Frontend:</strong> The user interface is built with React and Vite. It manages the webcam feed, sends frames to the local server, and displays the AI-generated captions.</li>
+<li><strong>API & Connection:</strong> Engineered the API communication between frontend and backend, resolving Cross-Origin Resource Sharing (CORS) challenges to ensure a stable connection.</li>
 </ul>
 </div>
+
+<p className={styles.projectBodyText}>
+This project provided a practical deep dive into the end-to-end deployment of AI models,
+from compiling the C++ backend with CMake and CUDA to building a responsive full-stack application.
+It underscores the growing potential of powerful, private, and locally-run AI.
+</p>
 
 <div className={styles.tagRow}>
   <span className={styles.tag}>Python</span>
@@ -408,6 +423,9 @@ boundaries of what's possible with on-device visual inference — no cloud neede
   <span className={styles.tag}>GPU Computing</span>
   <span className={styles.tag}>Computer Vision</span>
   <span className={styles.tag}>LLM</span>
+  <span className={styles.tag}>React</span>
+  <span className={styles.tag}>C++</span>
+  <span className={styles.tag}>CMake</span>
 </div>
 </div>
 
@@ -472,14 +490,17 @@ operational reliability.
   <h4 className={styles.subProjectTitle}>Ticketing Platform — AWS Cloud System</h4>
   <span className={styles.subProjectRole}>Head of Core Committee</span>
   <p className={styles.textProjectDesc}>
-    Led end-to-end build of a serverless-inspired AWS event platform supporting
-    5,000+ global attendees. Engineered secure checkout workflows with Stripe,
-    real-time ticket generation, and infrastructure deployed on AWS with Elastic
-    Load Balancing and Auto Scaling, achieving 99.9% uptime during high-concurrency launches.
+    Led end-to-end build of a serverless-inspired AWS event platform — owning authentication,
+    authorization, messaging queues, error handling, and distributed data persistence, with a
+    celebrity announcement driving unexpected viral demand. Architected a highly available AWS
+    system with Stripe payment gateway, NoSQL data persistence, deployment automation, and Docker —
+    implemented system monitoring, performance optimisation, and infrastructure scaling to absorb
+    a 45x surge to 90,000 users with zero downtime.
   </p>
   <div className={styles.tagRow}>
     <span className={styles.tag}>AWS</span>
     <span className={styles.tag}>EC2</span>
+    <span className={styles.tag}>ELB</span>
     <span className={styles.tag}>Docker</span>
     <span className={styles.tag}>Stripe</span>
     <span className={styles.tag}>NoSQL</span>
@@ -492,9 +513,12 @@ operational reliability.
 <div className={styles.subProject}>
   <h4 className={styles.subProjectTitle}>Farmvalli Organics — Cloud-Based E-Commerce Platform</h4>
   <p className={styles.textProjectDesc}>
-    Owned delivery of a globally distributed client platform powering organic product
-    commerce. Built scalable REST APIs, integrated CI/CD pipelines with Jenkins,
-    and managed end-to-end deployment across cloud infrastructure.
+    Owned delivery of a globally distributed client platform — responsible for enterprise API design,
+    relational and NoSQL data persistence, authentication flows, and translating business requirements
+    into scalable backend architecture. Delivered well-tested, documented code using Java, Python,
+    Node.js, REST APIs, and Jenkins CI/CD — implementing error handling, secure authentication,
+    messaging-driven workflows, and agile delivery with continuous improvement of system performance
+    and maintainability.
   </p>
   <div className={styles.tagRow}>
     <span className={styles.tag}>Java</span>

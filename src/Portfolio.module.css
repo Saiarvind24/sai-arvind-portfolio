@@ -268,6 +268,17 @@ img, video {
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
 }
 
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--white);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px;
+  line-height: 1;
+}
+
 .hireBtn {
   padding: 9px 22px;
   border-radius: var(--r-sm);
@@ -497,7 +508,7 @@ img, video {
 }
 
 .projectBodyText {
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.8;
   color: var(--white-soft);
   margin: 0 0 24px;
@@ -526,7 +537,7 @@ img, video {
 }
 
 .projectTechDetails li {
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.75;
   color: var(--white-soft);
   padding: 6px 0;
@@ -552,7 +563,7 @@ img, video {
 }
 
 .projectFeatureList p {
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.6;
   color: var(--white-soft);
   margin: 10px 0;
@@ -754,7 +765,7 @@ img, video {
 }
 
 .textProjectDesc {
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.75;
   color: var(--white-soft);
   margin: 0 0 24px;
@@ -793,7 +804,7 @@ img, video {
 }
 
 .subProjectTitle {
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 600;
   color: var(--white);
   margin: 0 0 4px;
@@ -1489,30 +1500,57 @@ img, video {
 @media (max-width: 768px) {
 
   .globalHeader {
-    height: auto;
-    padding: 12px 14px;
-    flex-direction: column;
-    gap: 10px;
+    height: 56px;
+    padding: 0 16px;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 0;
   }
 
-  .logo { text-align: center; width: 100%; font-size: 13px; }
+  .hamburger {
+    display: block;
+    z-index: 1001;
+  }
 
   .navDock {
-    width: 100%;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 4px;
-    padding: 6px;
+    display: none;
+    position: absolute;
+    top: 56px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background: rgba(10, 22, 40, 0.95);
+    backdrop-filter: var(--blur);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 12px 0;
+    gap: 0;
+    border-radius: 0;
   }
 
-  .navItem { font-size: 11px; padding: 7px 10px; }
+  .navOpen {
+    display: flex;
+  }
+
+  .navItem {
+    font-size: 14px;
+    padding: 14px 24px;
+    border-radius: 0;
+    text-align: left;
+    width: 100%;
+  }
+
+  .navItem:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
+
   .hireBtn { display: none; }
 
   .awsBar { top: auto; position: relative; font-size: 13px; }
 
-  .mainLayout { padding: 180px 16px 40px; max-width: 100%; }
+  .mainLayout { padding: 64px 16px 40px; max-width: 100%; }
 
-  .heroSection { margin-bottom: 48px; }
+  .heroSection { margin-bottom: 48px; padding-top: 0; }
+  .heroOffset { margin-top: 0; }
   .heroSection h1 { font-size: 30px; letter-spacing: 0.5px; }
   .heroImage { width: 150px; height: 150px; }
   .heroCard { padding: 36px 24px; }
@@ -1532,15 +1570,15 @@ img, video {
 
   .projectContentBox { padding: 24px; }
   .projectGallery { grid-template-columns: repeat(2, 1fr); }
-  .projectBodyText { font-size: 14px; }
-  .projectTechDetails li { font-size: 13px; }
-  .projectFeatureList p { font-size: 14px; }
+  .projectBodyText { font-size: 15px; }
+  .projectTechDetails li { font-size: 14px; }
+  .projectFeatureList p { font-size: 15px; }
 
   .textProjectGrid { gap: 16px; }
   .subProjectRow { grid-template-columns: 1fr; }
   .textProjectBox { padding: 24px; }
   .textProjectTitle { font-size: 18px; }
-  .textProjectDesc { font-size: 14px; }
+  .textProjectDesc { font-size: 15px; }
   .tag { font-size: 11px; padding: 4px 12px; }
 
   .projectText,
@@ -1603,7 +1641,7 @@ img, video {
    ===================================================== */
 
 @media (max-width: 480px) {
-  .mainLayout { padding-top: 200px; }
+  .mainLayout { padding-top: 64px; }
   .heroSection h1 { font-size: 26px; }
   .heroImage { width: 130px; height: 130px; }
   .heroCard { padding: 28px 18px; }
@@ -1620,7 +1658,6 @@ img, video {
    ===================================================== */
 
 @media (max-width: 360px) {
-  .navItem { font-size: 9px; padding: 5px 7px; }
   .heroImage { width: 120px; height: 120px; }
-  .mainLayout { padding-top: 220px; }
+  .mainLayout { padding-top: 64px; }
 }
