@@ -1,14 +1,16 @@
 import React, { useRef, useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useSpring } from "framer-motion";
 import styles from "./Portfolio.module.css";
 import emailjs from "@emailjs/browser";
+import { Reveal, RevealGroup, RevealItem } from "./components/Reveal";
 
 const sections = [
   "OVERVIEW",
+  "ORGLIDE",
+  "ARCHITECTURE",
   "PROJECTS",
   "EDUCATION",
   "CERTIFICATIONS",
-  "CASESTUDIES",
   "SKILLS",
   "ARTIST_ACHIEVEMENTS",
   "ENQUIRY",
@@ -16,22 +18,177 @@ const sections = [
 
 const navLabels = {
   OVERVIEW: "Overview",
+  ORGLIDE: "ORGLIDE",
+  ARCHITECTURE: "Architecture",
   PROJECTS: "Projects",
   EDUCATION: "Education",
   CERTIFICATIONS: "Certifications",
-  CASESTUDIES: "Case Studies",
   SKILLS: "Skills",
   ARTIST_ACHIEVEMENTS: "Artist",
   ENQUIRY: "Contact",
 };
 
 const bootLines = [
-  "> Booting Sai Arvind System...",
-  "> Loading Problem Solving Modules...",
-  "> Initializing Scalable Architecture Thinking...",
-  "> Connecting Creativity Engine...",
-  "> Running Clean Code Protocols...",
+  "> Booting ORGLIDE Platform Console...",
+  "> Loading Enterprise AI Governance Modules...",
+  "> Initializing Distributed Compliance Intelligence...",
+  "> Connecting Multi-Tenant Trust Infrastructure...",
+  "> Verifying Immutable Audit Chains...",
   "> Ready.",
+];
+
+const orglideProblemSpace = [
+  {
+    title: "Fragmented Compliance Workflows",
+    desc: "Compliance lives across spreadsheets, shared drives, email threads, and a graveyard of disconnected SaaS tools. ORGLIDE collapses that surface area into a single governance plane."
+  },
+  {
+    title: "Audit Chaos",
+    desc: "Audit prep becomes a multi-week scramble to reconstruct who approved what, when, and with which evidence. ORGLIDE keeps that lineage continuously, not retroactively."
+  },
+  {
+    title: "Opaque AI Decisions",
+    desc: "Most AI systems can't explain why they fired, what context they used, or what version of policy was in effect. ORGLIDE binds every AI decision to evidence, prompt, model, and policy snapshot."
+  },
+  {
+    title: "No Organizational Memory",
+    desc: "Every control review starts from zero. ORGLIDE's compliance memory accumulates precedent — past decisions become first-class context for the next ones."
+  },
+  {
+    title: "Regulatory Reporting Overhead",
+    desc: "Quarterly reporting becomes a multi-team firefight. ORGLIDE reconstructs the compliance timeline deterministically from event-sourced audit chains."
+  },
+  {
+    title: "Untraceable AI Workflows",
+    desc: "Black-box AI pipelines can't survive enterprise scrutiny. Every ORGLIDE worker emits correlation-tagged lifecycle events end-to-end."
+  },
+  {
+    title: "Siloed Operational Tooling",
+    desc: "DevOps, GRC, legal, and engineering each run their own dashboards. ORGLIDE consolidates pipeline health, governance posture, and evidence state into one operator console."
+  },
+  {
+    title: "Compliance Drift",
+    desc: "Controls degrade silently as systems evolve. ORGLIDE's continuous AI review surfaces drift the moment evidence stops matching policy."
+  }
+];
+
+const orglideCapabilities = [
+  { tag: "Tenant Fabric",      title: "Tenant Isolation",                desc: "Per-tenant data, key, and event-scope boundaries enforced at every service edge. No cross-tenant leakage paths by construction." },
+  { tag: "Access",             title: "RBAC & Org Policy",               desc: "Organization-aware role and permission model with policy snapshots captured into the audit chain on every privileged action." },
+  { tag: "Trust",              title: "Immutable Audit Chains",          desc: "Append-only, hash-linked audit records spanning AI dispatch, worker completion, human action, and policy state." },
+  { tag: "AI Governance",      title: "AI Pipeline Governance",          desc: "Schema-versioned event contracts, deterministic worker dispatch, and policy-aware guardrails on every AI execution." },
+  { tag: "Intelligence",       title: "Compliance Intelligence",         desc: "Continuous AI review of controls, evidence, and obligations — surfaces gaps before they become audit findings." },
+  { tag: "Retention",          title: "Retention Policies",              desc: "Per-tenant, per-class retention windows with cryptographic enforcement at the storage and audit layers." },
+  { tag: "Legal",              title: "Legal Hold Workflows",            desc: "Tamper-evident legal hold that overrides retention and freezes lineage across documents, decisions, and audit segments." },
+  { tag: "Explainability",     title: "AI Decision Traceability",        desc: "Every AI output links back to model, prompt, policy version, retrieved context, and evidence — fully reconstructable." },
+  { tag: "Evidence",           title: "Evidence Correlation",            desc: "Documents, controls, and AI decisions are joined through correlation/causation IDs into a coherent compliance graph." },
+  { tag: "Replay",             title: "Event Replay",                    desc: "Event-sourced AiJob lifecycle enables deterministic replay of any historical pipeline run for audit or postmortem." },
+  { tag: "Bus",                title: "Kafka Event Bus",                 desc: "EventEnvelope topology with in-process fallback. Workers stay transport-agnostic; brokers are an implementation detail." },
+  { tag: "Orchestration",      title: "AI Worker Orchestration",         desc: "AiOrchestrationService dispatches matching, review, memory, and forecast workers with per-job state tracking." },
+  { tag: "Tracing",            title: "Cross-Service Correlation IDs",   desc: "Every request, event, worker, and side-effect carries correlationId/causationId — full distributed traces by default." },
+  { tag: "Telemetry",          title: "Observability Streams",           desc: "STOMP/WebSocket /topic/ai-pipeline streams surface live job deltas, throughput, and health to operator dashboards." },
+  { tag: "Memory",             title: "Vector Compliance Memory",        desc: "Pluggable EmbeddingProvider + VectorStoreProvider with pgvector backing. Hot-swap providers without changing call sites." },
+  { tag: "Console",            title: "Governance Dashboards",           desc: "Operator-grade dashboards for compliance posture, AI pipeline state, evidence coverage, and tenant-level drift." },
+  { tag: "Forecast",           title: "AI Forecasting",                  desc: "AiForecastWorker projects compliance gap risk and control-degradation trajectories from organizational history." },
+  { tag: "RAG",                title: "Retrieval-Augmented Compliance",  desc: "RAG pipelines retrieve only policy-scoped, tenant-scoped context — eliminating cross-context contamination." },
+  { tag: "Documents",          title: "Secure Document Infrastructure",  desc: "Encrypted, lineage-tracked document service with signed retrieval and AI-decision back-references." },
+  { tag: "Realtime",           title: "WebSocket Intelligence Streams",  desc: "Live operator telemetry over STOMP — pipeline state propagates to the UI without polling." },
+  { tag: "Reliability",        title: "Retry + DLQ Fabric",              desc: "Configurable retries, dead-letter routing, and graceful UI degradation — the platform never crashes when an AI step delays." },
+  { tag: "Integrity",          title: "Tamper-Evident Logging",          desc: "Hash-linked log segments make any tampering with audit history immediately detectable." },
+  { tag: "Crypto",             title: "Cryptographic Integrity",         desc: "Content addressing for evidence, signed retrieval URLs, and verifiable audit segment hashes." },
+  { tag: "Timeline",           title: "Compliance Timeline Reconstruction", desc: "Reconstruct the exact compliance state of any tenant at any point in time, directly from the event log." },
+  { tag: "Guardrails",         title: "Policy-Aware AI Guardrails",      desc: "AI execution is gated against the tenant's active policy snapshot — never against drifted assumptions." },
+  { tag: "Isolation",          title: "Multi-Tenant Context Isolation",  desc: "Tenant context is propagated through every layer — service, worker, vector query, and audit segment." }
+];
+
+const orglidePrinciples = [
+  { title: "Deterministic AI over black-box automation",    desc: "Every AI step is replayable with the same model, prompt, policy, and context. No magic." },
+  { title: "Governance before automation",                  desc: "Workflows automate only what governance can verify, log, and reconstruct." },
+  { title: "Auditability by default",                       desc: "Audit isn't a feature — it's a side-effect of every action the platform takes." },
+  { title: "Event-driven everything",                       desc: "All state transitions flow through the EventEnvelope bus so the system stays composable and replayable." },
+  { title: "Operational intelligence as infrastructure",    desc: "Telemetry, traces, and health aren't dashboards — they're a first-class subsystem." },
+  { title: "Compliance memory accumulates",                 desc: "Every closed control strengthens the next one through vector-backed organizational memory." },
+  { title: "Explainable AI execution",                      desc: "Every AI output links back to inputs, policy version, and retrieval set — full reconstructability." },
+  { title: "Replayable systems",                            desc: "Event sourcing on AI lifecycle and audit chains makes any historical state reachable on demand." },
+  { title: "Infrastructure-grade reliability",              desc: "Backoff, DLQs, and graceful degradation — the UI never crashes on AI failure." },
+  { title: "Tenant isolation first",                        desc: "Tenancy is enforced structurally, not by convention. There are no shared mutable surfaces between tenants." },
+  { title: "Traceability over assumptions",                 desc: "If it can't be traced, it didn't happen. Every action carries correlation and causation IDs." }
+];
+
+const orglideRoadmap = [
+  { phase: "Now",     title: "Governance Core",            desc: "Multi-tenant fabric, AI orchestration, immutable audit chains, compliance memory, secure evidence infrastructure." },
+  { phase: "Next",    title: "Autonomous Governance Agents", desc: "Policy-aware agents that monitor control health, propose remediations, and execute under deterministic guardrails." },
+  { phase: "Next",    title: "Real-Time Regulatory Adaptation", desc: "Continuous ingestion of regulatory deltas; policy snapshots auto-update with full audit lineage." },
+  { phase: "Soon",    title: "Multi-Region Compliance Fabric", desc: "Region-scoped data plane with cross-region governance plane — data residency without sacrificing visibility." },
+  { phase: "Soon",    title: "Enterprise Policy Simulation", desc: "Dry-run any policy change against historical evidence to forecast pass/fail impact before activation." },
+  { phase: "Horizon", title: "AI Risk Forecasting",        desc: "Trajectory models for control degradation, drift velocity, and audit exposure based on organizational telemetry." },
+  { phase: "Horizon", title: "Compliance Graph Intelligence", desc: "Cross-entity knowledge graph linking controls, evidence, AI decisions, and obligations into queryable lineage." },
+  { phase: "Horizon", title: "Agentic Audit Systems",      desc: "Continuous, autonomous audit agents that reconstruct compliance posture without human intervention." },
+  { phase: "Horizon", title: "Trust Scoring Engine",       desc: "Quantitative trust scores per control, tenant, and AI subsystem — a directly auditable trust signal." },
+  { phase: "Horizon", title: "Cross-Enterprise Governance Networks", desc: "Federated governance attestations between organizations — verifiable trust beyond a single tenant boundary." }
+];
+
+const orglideArchitecture = [
+  {
+    title: "Multi-Tenant Platform",
+    desc: "Tenant-scoped data isolation, organization-level RBAC, and per-tenant key contexts across every service boundary.",
+    tag: "Platform Core"
+  },
+  {
+    title: "Event-Driven Orchestration",
+    desc: "Kafka-backed EventEnvelope bus with in-process fallback, correlation/causation tracing, and worker fan-out for AI pipelines.",
+    tag: "Distributed Systems"
+  },
+  {
+    title: "AI Orchestration Engine",
+    desc: "AiOrchestrationService coordinates matching, review, memory, and forecast workers — each tracked via the AiJob lifecycle.",
+    tag: "AI Infrastructure"
+  },
+  {
+    title: "pgvector + RAG Memory",
+    desc: "Vector-native compliance memory using pluggable EmbeddingProvider + VectorStoreProvider abstractions. Hot-swap providers without touching call sites.",
+    tag: "Retrieval Intelligence"
+  },
+  {
+    title: "AI Governance Layer",
+    desc: "Policy-aware AI guardrails, schema-versioned event contracts, and deterministic re-runs over historical evidence.",
+    tag: "Governance"
+  },
+  {
+    title: "Immutable Audit Chains",
+    desc: "Append-only audit trail with cryptographic integrity, tamper-evident hashing, and full replay across the compliance timeline.",
+    tag: "Trust Infrastructure"
+  },
+  {
+    title: "Real-Time Intelligence",
+    desc: "STOMP/WebSocket streams on /topic/ai-pipeline surface live job lifecycle deltas, health, throughput, and per-correlation traces.",
+    tag: "Observability"
+  },
+  {
+    title: "Secure Document Infrastructure",
+    desc: "Encrypted document service with virus scanning hooks, signed retrieval, and lineage tied to every AI decision made against it.",
+    tag: "Security Fabric"
+  },
+  {
+    title: "Compliance Memory Engine",
+    desc: "AiComplianceMemoryService accumulates organizational precedent — every closed control becomes context for the next one.",
+    tag: "Organizational Memory"
+  },
+  {
+    title: "Governance Operations",
+    desc: "Retention policies, legal hold, deletion workflows, and operational dashboards designed for regulated enterprise tenants.",
+    tag: "Operations"
+  },
+  {
+    title: "Distributed Observability",
+    desc: "/api/ai-pipeline health, metrics, and job introspection — operational visibility without ever reading the broker directly.",
+    tag: "SRE"
+  },
+  {
+    title: "Resilience & Retry Fabric",
+    desc: "Backoff retries, dead-letter routing, and graceful UI degradation — the platform never crashes when an AI step is delayed.",
+    tag: "Reliability"
+  }
 ];
 
 export default function SaiArvindPortfolio() {
@@ -39,11 +196,19 @@ export default function SaiArvindPortfolio() {
   const [activeSection, setActiveSection] = useState("OVERVIEW");
   const [expanded, setExpanded] = useState(false);
   const [showAwsBar, setShowAwsBar] = useState(true);
+  const [scrolled, setScrolled] = useState(false);
   const [loading, setLoading] = useState(true);
   const [bootPhase, setBootPhase] = useState("boot");
   const [visibleLines, setVisibleLines] = useState(0);
   const [lightboxSrc, setLightboxSrc] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const { scrollYProgress } = useScroll();
+  const progressScaleX = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 28,
+    restDelta: 0.001
+  });
 
   const formRef = useRef();
   const sendEmail = (e) => {
@@ -150,6 +315,8 @@ useEffect(() => {
         setShowAwsBar(true);
       }
 
+      setScrolled(currentScroll > 24);
+
       lastScrollY = currentScroll;
       ticking = false;
 
@@ -216,8 +383,14 @@ useEffect(() => {
   </div>
 </div>
 
+{/* ================= SCROLL PROGRESS ================= */}
+<motion.div
+  className={styles.scrollProgress}
+  style={{ scaleX: progressScaleX }}
+/>
+
 { /* ================= NAV ================= */ }
-<header className={styles.globalHeader}>
+<header className={`${styles.globalHeader} ${scrolled ? styles.headerScrolled : ""}`}>
 
 <button
 className={styles.hamburger}
@@ -276,17 +449,31 @@ className={styles.heroImage}
 />
 
 <h1>SAI ARVIND VS</h1>
-<p className={styles.heroStatement}>
-I don't want to be just another software engineer.
-I want to be a builder of things that matter,
-a creator of experiences that resonate,
-and a catalyst for innovation that shapes the future.
-With a passion for technology and a drive to make an impact,
-I am on a mission to build products that not only solve problems
-but also inspire and empower people around the world.
+
+<p className={styles.heroRole}>
+  Founder &amp; Lead Platform Engineer at <span className={styles.heroRoleAccent}>ORGLIDE</span>
 </p>
 
+<p className={styles.heroStatement}>
+Building enterprise-grade AI infrastructure for compliance,
+governance, and organizational intelligence. ORGLIDE is a
+multi-tenant SaaS platform engineered around event-driven
+AI orchestration, immutable audit chains, pgvector-backed
+compliance memory, and a real-time intelligence engine —
+the trust infrastructure modern regulated enterprises actually need.
+</p>
+
+<div className={styles.heroCtaRow}>
+  <a href="https://www.orglide.com" target="_blank" rel="noreferrer" className={styles.heroCtaPrimary}>
+    Visit ORGLIDE →
+  </a>
+  <a href="https://www.linkedin.com/company/orglide/" target="_blank" rel="noreferrer" className={styles.heroCtaSecondary}>
+    ORGLIDE on LinkedIn
+  </a>
+</div>
+
 <div className={styles.socialRow}>
+<a href="https://www.orglide.com" target="_blank" rel="noreferrer" title="ORGLIDE"><img src="/Orglide Design logo.png" alt="ORGLIDE" className={styles.socialOrglideImg}/></a>
 <a href="https://github.com/Saiarvind24"><img src="./github-icon-2.svg"/></a>
 <a href="https://www.linkedin.com/in/sai-arvind-vs-5051b421b/"><img src="./linkedln logo 1.png"/></a>
 <a href="https://www.youtube.com/@SAMUSIQ"><img src="./youtube logo.png"/></a>
@@ -296,6 +483,558 @@ but also inspire and empower people around the world.
 
 </div>
 
+</motion.section>
+
+
+{/* ================= ORGLIDE FLAGSHIP ================= */}
+<motion.section
+variants={fade}
+initial="hidden"
+whileInView="visible"
+viewport={{once:true}}
+ref={sectionRefs.current.ORGLIDE}
+data-section="ORGLIDE"
+className={styles.orglideSection}
+>
+  <div className={styles.orglideGrid}>
+    <div className={styles.orglideHeaderRow}>
+      <div className={styles.orglideMarkBox}>
+        <div className={styles.orglideLogoFrame}>
+          <img src="/Orglide Design logo.png" alt="ORGLIDE" className={styles.orglideLogoImg}/>
+        </div>
+        <div className={styles.orglideMarkMeta}>
+          <span className={styles.orglideName}>ORGLIDE</span>
+          <span className={styles.orglideWordmark}>Enterprise AI Governance Platform</span>
+        </div>
+      </div>
+      <div className={styles.orglideRoleBox}>
+        <span className={styles.orglideRole}>Founder &amp; Lead Platform Engineer</span>
+        <span className={styles.orglideTimeline}>2025 — Present · Ireland</span>
+      </div>
+    </div>
+
+    {/* SaaS tagline banner */}
+    <div className={styles.saasBanner}>
+      <div className={styles.saasBannerInner}>
+        <span className={styles.saasBannerMain}>SOFTWARE&nbsp;AS&nbsp;A</span>
+        <span className={styles.saasBannerStrike}>SERVICE</span>
+        <span className={styles.saasBannerSub}>SOLUTION</span>
+      </div>
+
+      <span className={styles.saasBannerCaption}>
+        Multi-tenant. Governance-native. Built for regulated AI at enterprise scale.
+      </span>
+    </div>
+
+    <h2 className={styles.orglideTagline}>
+      The trust infrastructure for enterprise AI — governance, compliance,
+      and operational intelligence in one platform.
+    </h2>
+
+    <p className={styles.orglideLead}>
+      ORGLIDE is an enterprise AI governance platform engineered for
+      regulated industries. It unifies AI orchestration, immutable audit
+      chains, vector-native compliance memory, secure evidence
+      infrastructure, and real-time operational telemetry into a single
+      multi-tenant trust fabric. I architected and engineered the
+      platform end-to-end — distributed services, deterministic AI
+      execution, governance systems, document security, observability
+      streams, and the operational intelligence layer that connects them.
+    </p>
+
+    <div className={styles.orglideCtaRow}>
+      <a href="https://www.orglide.com" target="_blank" rel="noreferrer" className={styles.orglideBtnPrimary}>
+        Visit orglide.com
+      </a>
+      <a href="https://www.linkedin.com/company/orglide/" target="_blank" rel="noreferrer" className={styles.orglideBtnSecondary}>
+        Company on LinkedIn
+      </a>
+      <a href="#ARCHITECTURE"
+         onClick={(e)=>{e.preventDefault(); scrollToSection("ARCHITECTURE");}}
+         className={styles.orglideBtnGhost}>
+        View Platform Architecture ↓
+      </a>
+    </div>
+
+    <RevealGroup className={styles.orglidePillarGrid} stagger={0.07}>
+      <RevealItem className={styles.orglidePillar}>
+        <span className={styles.pillarLabel}>What is ORGLIDE</span>
+        <p>An enterprise AI platform that unifies compliance operations,
+        AI governance, evidence management, and organizational intelligence
+        into a single multi-tenant trust fabric.</p>
+      </RevealItem>
+      <RevealItem className={styles.orglidePillar}>
+        <span className={styles.pillarLabel}>Why I built it</span>
+        <p>Enterprises run compliance on spreadsheets, email threads, and
+        disconnected SaaS tools. ORGLIDE replaces that with a platform that
+        thinks — pulling AI, evidence, audit, and policy into one coherent system.</p>
+      </RevealItem>
+      <RevealItem className={styles.orglidePillar}>
+        <span className={styles.pillarLabel}>AI Compliance Copilot</span>
+        <p>An AI layer that reviews controls, matches requirements to
+        evidence, forecasts gaps, and accumulates organizational memory
+        so every prior decision strengthens the next one.</p>
+      </RevealItem>
+      <RevealItem className={styles.orglidePillar}>
+        <span className={styles.pillarLabel}>Secure Evidence Infrastructure</span>
+        <p>Encrypted, lineage-tracked document infrastructure with retention,
+        legal hold, and signed retrieval — every artifact tied to the AI
+        decision and audit chain it informs.</p>
+      </RevealItem>
+      <RevealItem className={styles.orglidePillar}>
+        <span className={styles.pillarLabel}>Immutable Audit Chains</span>
+        <p>Append-only, tamper-evident audit trail with correlation IDs
+        spanning every AI dispatch, worker completion, and human action
+        across the platform.</p>
+      </RevealItem>
+      <RevealItem className={styles.orglidePillar}>
+        <span className={styles.pillarLabel}>Organizational Intelligence Layer</span>
+        <p>Real-time operational telemetry, AI pipeline health, and
+        cross-tenant governance posture — surfaced through a System
+        Intelligence console built for operators, not just dashboards.</p>
+      </RevealItem>
+    </RevealGroup>
+
+    <div className={styles.orglideMetricsStrip}>
+      <div className={styles.orglideMetric}>
+        <span className={styles.metricValue}>Multi-Tenant</span>
+        <span className={styles.metricLabel}>Governance Architecture</span>
+      </div>
+      <div className={styles.orglideMetric}>
+        <span className={styles.metricValue}>Event-Driven</span>
+        <span className={styles.metricLabel}>AI Orchestration</span>
+      </div>
+      <div className={styles.orglideMetric}>
+        <span className={styles.metricValue}>Real-Time</span>
+        <span className={styles.metricLabel}>Operational Intelligence</span>
+      </div>
+      <div className={styles.orglideMetric}>
+        <span className={styles.metricValue}>Immutable</span>
+        <span className={styles.metricLabel}>Audit + Evidence Chain</span>
+      </div>
+      <div className={styles.orglideMetric}>
+        <span className={styles.metricValue}>Vector-Native</span>
+        <span className={styles.metricLabel}>Compliance Memory</span>
+      </div>
+    </div>
+
+
+    {/* ===== ENTERPRISE PROBLEM SPACE ===== */}
+    <div className={styles.orglideSubsection}>
+      <span className={styles.subKicker}>ENTERPRISE PROBLEM SPACE</span>
+      <h3 className={styles.subTitle}>What enterprise compliance actually looks like — and why it breaks.</h3>
+      <p className={styles.subLead}>
+        Regulated enterprises don't have a compliance product problem.
+        They have a compliance architecture problem. Governance is scattered
+        across tools that don't talk to each other, audit posture is
+        reconstructed manually under pressure, and AI is being deployed
+        faster than the surrounding trust infrastructure can keep up.
+        ORGLIDE replaces that fragmented surface area with a single,
+        event-driven trust fabric.
+      </p>
+      <RevealGroup className={styles.problemGrid} stagger={0.06}>
+        {orglideProblemSpace.map((p, i) => (
+          <RevealItem key={i} className={styles.problemCard}>
+            <h4 className={styles.problemTitle}>{p.title}</h4>
+            <p className={styles.problemDesc}>{p.desc}</p>
+          </RevealItem>
+        ))}
+      </RevealGroup>
+    </div>
+
+
+    {/* ===== WHY ORGLIDE EXISTS — FOUNDER VISION ===== */}
+    <div className={styles.orglideSubsection}>
+      <span className={styles.subKicker}>WHY ORGLIDE EXISTS</span>
+      <h3 className={styles.subTitle}>Trust infrastructure is becoming a tier-zero enterprise concern.</h3>
+      <div className={styles.visionGrid}>
+        <p className={styles.visionPara}>
+          Enterprise compliance tooling was built for a world where
+          governance moved at the speed of quarterly reviews. AI moves
+          continuously, deploys daily, and makes decisions inside workflows
+          that no human will manually re-verify. The gap between how fast
+          AI ships and how slowly governance reconstructs itself is the
+          single largest unaddressed enterprise risk today.
+        </p>
+        <p className={styles.visionPara}>
+          AI governance can't be a wrapper. It has to be the substrate —
+          deterministic execution, evidence-linked decisions, replayable
+          pipelines, and policy snapshots captured at the moment of action.
+          ORGLIDE was built on that conviction: governance, audit, and
+          AI are not three products. They are one platform.
+        </p>
+        <p className={styles.visionPara}>
+          Organizational intelligence is the missing primitive. Every
+          control review, every audit response, every AI decision is a
+          fact the organization should never have to re-derive. ORGLIDE's
+          compliance memory turns those facts into continuously
+          accumulating context — making the platform smarter with every
+          decision the organization makes.
+        </p>
+        <p className={styles.visionPara}>
+          Trust infrastructure will become as foundational to enterprise
+          AI as identity infrastructure became to enterprise SaaS.
+          That is the category ORGLIDE is built for.
+        </p>
+      </div>
+    </div>
+
+
+    {/* ===== ENTERPRISE CAPABILITIES MATRIX ===== */}
+    <div className={styles.orglideSubsection}>
+      <span className={styles.subKicker}>ENTERPRISE CAPABILITIES MATRIX</span>
+      <h3 className={styles.subTitle}>The platform surface area, in full.</h3>
+      <p className={styles.subLead}>
+        A capability matrix engineered for regulated enterprises and
+        high-assurance AI environments. Every capability is a first-class
+        subsystem — not a feature flag, not a roadmap entry.
+      </p>
+      <RevealGroup className={styles.capGrid} stagger={0.04}>
+        {orglideCapabilities.map((c, i) => (
+          <RevealItem key={i} className={styles.capCard}>
+            <span className={styles.capTag}>{c.tag}</span>
+            <h4 className={styles.capTitle}>{c.title}</h4>
+            <p className={styles.capDesc}>{c.desc}</p>
+          </RevealItem>
+        ))}
+      </RevealGroup>
+    </div>
+
+
+    {/* ===== PLATFORM ENGINEERING ===== */}
+    <div className={styles.orglideSubsection}>
+      <span className={styles.subKicker}>PLATFORM ENGINEERING</span>
+      <h3 className={styles.subTitle}>How the platform is engineered underneath.</h3>
+      <div className={styles.engineeringGrid}>
+        <div className={styles.engineeringCol}>
+          <h4 className={styles.engineeringHeader}>Distributed Systems Design</h4>
+          <p>Service boundaries are drawn around tenant context, not domain
+          accident. Every cross-boundary call carries correlationId,
+          causationId, tenant, actor, and policy version — making the
+          platform deterministically traceable end-to-end.</p>
+
+          <h4 className={styles.engineeringHeader}>Service Orchestration</h4>
+          <p>AiOrchestrationService coordinates worker fan-out, lifecycle
+          tracking, and result aggregation through the EventEnvelope bus.
+          Workers are transport-agnostic; Kafka and in-process delivery
+          are swappable without touching business logic.</p>
+
+          <h4 className={styles.engineeringHeader}>Deterministic AI Execution</h4>
+          <p>Every AI dispatch captures a snapshot of model, prompt, policy,
+          retrieved context, and tenant state. Re-running the same job
+          deterministically reproduces the same decision — a hard
+          requirement for regulated AI.</p>
+
+          <h4 className={styles.engineeringHeader}>Asynchronous Processing</h4>
+          <p>AI workloads run asynchronously through the AiJob lifecycle
+          (PENDING → PROCESSING → COMPLETED | RETRYING | FAILED). The UI
+          surfaces job state in real time over STOMP without ever blocking
+          on the AI path.</p>
+        </div>
+
+        <div className={styles.engineeringCol}>
+          <h4 className={styles.engineeringHeader}>Resilience Engineering</h4>
+          <p>Backoff retries, configurable max attempts, dead-letter
+          routing, and graceful UI degradation. AI delays surface as
+          "analysis delayed" — the platform never crashes on a failed
+          model call.</p>
+
+          <h4 className={styles.engineeringHeader}>Tenant Isolation</h4>
+          <p>Tenancy is enforced structurally — at the data layer, the
+          vector layer, the event bus, and the audit segment layer. Cross-
+          tenant access paths don't exist by construction.</p>
+
+          <h4 className={styles.engineeringHeader}>Observability-First Design</h4>
+          <p>Health, throughput, job state, and per-correlation traces are
+          exposed via /api/ai-pipeline. Operators get distributed visibility
+          without ever reading the broker directly.</p>
+
+          <h4 className={styles.engineeringHeader}>Replayability &amp; Event Sourcing</h4>
+          <p>The audit chain and AiJob log are append-only event streams.
+          Any historical compliance state is reconstructable; any past AI
+          pipeline run is replayable. The system has no "lost yesterday."</p>
+        </div>
+      </div>
+    </div>
+
+
+    {/* ===== AI GOVERNANCE DEEP DIVE ===== */}
+    <div className={styles.orglideSubsection}>
+      <span className={styles.subKicker}>AI GOVERNANCE</span>
+      <h3 className={styles.subTitle}>Governance-native AI execution.</h3>
+      <p className={styles.subLead}>
+        AI inside ORGLIDE doesn't run in a vacuum. Every decision is
+        bound to a policy snapshot, an evidence set, a tenant context,
+        and an audit segment. The result: AI workflows that survive
+        enterprise scrutiny — and reconstruct themselves on demand.
+      </p>
+      <RevealGroup className={styles.governanceGrid} stagger={0.05}>
+        <RevealItem className={styles.governanceCard}>
+          <h4>Policy-Aware AI Execution</h4>
+          <p>Every AI dispatch is evaluated against the tenant's active
+          policy snapshot. Drift between when a policy was written and
+          when an AI decision was made is observable, not invisible.</p>
+        </RevealItem>
+        <RevealItem className={styles.governanceCard}>
+          <h4>Evidence-Linked Decisions</h4>
+          <p>Every AI output references the exact documents, controls,
+          and prior decisions it consumed — making the decision graph
+          fully reconstructable for audit.</p>
+        </RevealItem>
+        <RevealItem className={styles.governanceCard}>
+          <h4>Audit Reconstruction</h4>
+          <p>Audit segments are hash-linked and event-sourced. Any past
+          compliance state is rebuildable directly from the log —
+          no manual reconstruction, no quarterly scramble.</p>
+        </RevealItem>
+        <RevealItem className={styles.governanceCard}>
+          <h4>AI Lifecycle Tracking</h4>
+          <p>Every AI job moves through a tracked lifecycle with
+          PENDING / PROCESSING / COMPLETED / RETRYING / FAILED states
+          and durable error context — never a silent failure.</p>
+        </RevealItem>
+        <RevealItem className={styles.governanceCard}>
+          <h4>AI Orchestration Tracing</h4>
+          <p>CorrelationId / causationId thread every dispatch through
+          fan-out workers and downstream effects. A single upload's
+          full pipeline is queryable in one trace.</p>
+        </RevealItem>
+        <RevealItem className={styles.governanceCard}>
+          <h4>Compliance Memory Accumulation</h4>
+          <p>AiComplianceMemoryService ingests closed decisions into a
+          vector-backed memory layer. Future controls retrieve precedent
+          as context — governance compounds with use.</p>
+        </RevealItem>
+        <RevealItem className={styles.governanceCard}>
+          <h4>Enterprise Explainability</h4>
+          <p>Every decision can be opened: which model, which prompt,
+          which retrieved context, which policy version, which tenant.
+          Explainability is structural, not bolted on.</p>
+        </RevealItem>
+        <RevealItem className={styles.governanceCard}>
+          <h4>Deterministic Re-Runs</h4>
+          <p>Re-dispatching an AI job against the same captured inputs
+          and policy snapshot produces the same decision. Regulator-grade
+          reproducibility, by design.</p>
+        </RevealItem>
+      </RevealGroup>
+    </div>
+
+
+    {/* ===== SYSTEM INTELLIGENCE / OBSERVABILITY ===== */}
+    <div className={styles.orglideSubsection}>
+      <span className={styles.subKicker}>SYSTEM INTELLIGENCE</span>
+      <h3 className={styles.subTitle}>Operational telemetry built like a serious infrastructure platform.</h3>
+      <RevealGroup className={styles.observabilityGrid} stagger={0.06}>
+        <RevealItem className={styles.obsCard}>
+          <span className={styles.obsLabel}>LIVE TELEMETRY</span>
+          <p>STOMP / WebSocket streams on <code>/topic/ai-pipeline</code>
+          push job lifecycle deltas to operator dashboards in real time.</p>
+        </RevealItem>
+        <RevealItem className={styles.obsCard}>
+          <span className={styles.obsLabel}>PIPELINE THROUGHPUT</span>
+          <p><code>/api/ai-pipeline/metrics</code> exposes counts by
+          status, event type, and p-avg latency across the worker fleet.</p>
+        </RevealItem>
+        <RevealItem className={styles.obsCard}>
+          <span className={styles.obsLabel}>AI JOB HEALTH</span>
+          <p><code>/api/ai-pipeline/health</code> surfaces transport,
+          provider, and worker readiness — operational liveness for the
+          entire AI plane.</p>
+        </RevealItem>
+        <RevealItem className={styles.obsCard}>
+          <span className={styles.obsLabel}>EVENT TRACING</span>
+          <p><code>/api/ai-pipeline/jobs/correlation/&#123;id&#125;</code>
+          traces a single upload's full fan-out across workers and
+          downstream effects.</p>
+        </RevealItem>
+        <RevealItem className={styles.obsCard}>
+          <span className={styles.obsLabel}>QUEUE MONITORING</span>
+          <p>Per-worker backpressure, retry state, and DLQ visibility —
+          surfaced at the operator layer, not buried in the broker.</p>
+        </RevealItem>
+        <RevealItem className={styles.obsCard}>
+          <span className={styles.obsLabel}>INCIDENT RECONSTRUCTION</span>
+          <p>Correlation-tagged event history lets operators reconstruct
+          the exact sequence of any historical incident from the log.</p>
+        </RevealItem>
+      </RevealGroup>
+    </div>
+
+
+    {/* ===== SECURITY + TRUST ===== */}
+    <div className={styles.orglideSubsection}>
+      <span className={styles.subKicker}>SECURITY &amp; TRUST FABRIC</span>
+      <h3 className={styles.subTitle}>Enterprise-grade controls, end to end.</h3>
+      <RevealGroup className={styles.trustGrid} stagger={0.05}>
+        <RevealItem className={styles.trustCard}>
+          <h4>Encryption</h4>
+          <p>Documents and evidence are encrypted at rest with tenant-
+          scoped key contexts; retrieval URLs are signed and short-lived.</p>
+        </RevealItem>
+        <RevealItem className={styles.trustCard}>
+          <h4>Signed Retrieval</h4>
+          <p>Every document and audit segment access produces a signed,
+          auditable retrieval record — no anonymous access paths exist.</p>
+        </RevealItem>
+        <RevealItem className={styles.trustCard}>
+          <h4>Document Lineage</h4>
+          <p>Every artifact is back-referenced to the AI decisions and
+          audit segments it informs — a complete evidence DAG.</p>
+        </RevealItem>
+        <RevealItem className={styles.trustCard}>
+          <h4>Tamper Evidence</h4>
+          <p>Hash-linked audit segments make any historical mutation
+          immediately and cryptographically detectable.</p>
+        </RevealItem>
+        <RevealItem className={styles.trustCard}>
+          <h4>Audit Integrity</h4>
+          <p>Append-only event log with verifiable segment hashes —
+          regulator-grade integrity guarantees, not aspirational ones.</p>
+        </RevealItem>
+        <RevealItem className={styles.trustCard}>
+          <h4>Tenant Security</h4>
+          <p>Tenant context is enforced at the service, storage, vector,
+          and audit layers — there is no shared mutable surface.</p>
+        </RevealItem>
+        <RevealItem className={styles.trustCard}>
+          <h4>Retention Enforcement</h4>
+          <p>Per-tenant retention windows enforced at storage and audit
+          boundaries with cryptographic deletion attestations.</p>
+        </RevealItem>
+        <RevealItem className={styles.trustCard}>
+          <h4>Evidence Immutability</h4>
+          <p>Evidence segments are content-addressed and chained — any
+          rewrite produces a divergent hash trail, never silent edits.</p>
+        </RevealItem>
+        <RevealItem className={styles.trustCard}>
+          <h4>Secure Evidence Lifecycle</h4>
+          <p>Ingest → classify → link → retain → legal-hold → delete —
+          each stage emits an audit record on the immutable chain.</p>
+        </RevealItem>
+      </RevealGroup>
+    </div>
+
+
+    {/* ===== ENGINEERING PRINCIPLES ===== */}
+    <div className={styles.orglideSubsection}>
+      <span className={styles.subKicker}>ENGINEERING PRINCIPLES</span>
+      <h3 className={styles.subTitle}>The non-negotiables we build against.</h3>
+      <RevealGroup className={styles.principleGrid} stagger={0.05}>
+        {orglidePrinciples.map((p, i) => (
+          <RevealItem key={i} className={styles.principleCard}>
+            <span className={styles.principleNum}>{String(i+1).padStart(2,"0")}</span>
+            <h4 className={styles.principleTitle}>{p.title}</h4>
+            <p className={styles.principleDesc}>{p.desc}</p>
+          </RevealItem>
+        ))}
+      </RevealGroup>
+    </div>
+
+
+    {/* ===== FOUNDER IMPACT ===== */}
+    <div className={styles.orglideSubsection}>
+      <span className={styles.subKicker}>FOUNDER IMPACT</span>
+      <h3 className={styles.subTitle}>What I built — and own — inside the platform.</h3>
+      <RevealGroup className={styles.impactList} stagger={0.04}>
+        <RevealItem className={styles.impactItem}><span>◆</span><p>Architected the ORGLIDE platform end-to-end — service topology, event contracts, AI lifecycle, governance layer, and operator surface.</p></RevealItem>
+        <RevealItem className={styles.impactItem}><span>◆</span><p>Engineered the distributed backend — service boundaries, tenant context propagation, and EventEnvelope orchestration across the AI pipeline.</p></RevealItem>
+        <RevealItem className={styles.impactItem}><span>◆</span><p>Designed the governance architecture — policy snapshots, audit segments, hash-linked chains, and reconstructable compliance state.</p></RevealItem>
+        <RevealItem className={styles.impactItem}><span>◆</span><p>Built the AI orchestration pipeline — AiOrchestrationService, worker fan-out, AiJob lifecycle, retry fabric, and deterministic re-runs.</p></RevealItem>
+        <RevealItem className={styles.impactItem}><span>◆</span><p>Implemented observability infrastructure — /api/ai-pipeline health, metrics, jobs, correlation traces, and STOMP telemetry streams.</p></RevealItem>
+        <RevealItem className={styles.impactItem}><span>◆</span><p>Designed the compliance memory system — vector-backed precedent layer powered by pluggable Embedding/VectorStore providers (pgvector).</p></RevealItem>
+        <RevealItem className={styles.impactItem}><span>◆</span><p>Engineered the multi-tenant trust infrastructure — structural tenant isolation across data, vector, event, and audit planes.</p></RevealItem>
+        <RevealItem className={styles.impactItem}><span>◆</span><p>Developed the operational intelligence layer — System Intelligence console exposing AI pipeline state, throughput, and governance posture.</p></RevealItem>
+        <RevealItem className={styles.impactItem}><span>◆</span><p>Designed event-driven AI execution — schema-versioned EventEnvelope, deterministic dispatch, transport-agnostic workers.</p></RevealItem>
+        <RevealItem className={styles.impactItem}><span>◆</span><p>Created the enterprise audit infrastructure — immutable, append-only, hash-linked audit chains with full timeline reconstruction.</p></RevealItem>
+      </RevealGroup>
+    </div>
+
+
+    {/* ===== ROADMAP ===== */}
+    <div className={styles.orglideSubsection}>
+      <span className={styles.subKicker}>PLATFORM ROADMAP</span>
+      <h3 className={styles.subTitle}>Where ORGLIDE is going next.</h3>
+      <RevealGroup className={styles.roadmapGrid} stagger={0.06}>
+        {orglideRoadmap.map((r, i) => (
+          <RevealItem key={i} className={styles.roadmapCard}>
+            <span className={`${styles.roadmapPhase} ${styles[`phase_${r.phase.toLowerCase()}`]}`}>{r.phase}</span>
+            <h4 className={styles.roadmapTitle}>{r.title}</h4>
+            <p className={styles.roadmapDesc}>{r.desc}</p>
+          </RevealItem>
+        ))}
+      </RevealGroup>
+    </div>
+
+
+    {/* ===== ENTERPRISE CTA ===== */}
+    <div className={styles.enterpriseCta}>
+      <div className={styles.enterpriseCtaInner}>
+        <span className={styles.subKicker}>BUILD WITH US</span>
+        <h3 className={styles.enterpriseCtaTitle}>
+          Building trust infrastructure for enterprise AI.
+        </h3>
+        <p className={styles.enterpriseCtaDesc}>
+          Designed for regulated industries operating at scale.
+          Governance-native AI systems for the next generation of enterprises.
+          Operational intelligence, compliance memory, and AI governance —
+          unified in one platform.
+        </p>
+        <div className={styles.enterpriseCtaBtns}>
+          <a href="https://www.orglide.com" target="_blank" rel="noreferrer" className={styles.orglideBtnPrimary}>Visit orglide.com →</a>
+          <a href="https://www.linkedin.com/company/orglide/" target="_blank" rel="noreferrer" className={styles.orglideBtnSecondary}>ORGLIDE on LinkedIn</a>
+          <a href="#ENQUIRY" onClick={(e)=>{e.preventDefault(); scrollToSection("ENQUIRY");}} className={styles.orglideBtnGhost}>Talk to the Founder</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</motion.section>
+
+
+{/* ================= ARCHITECTURE HIGHLIGHTS ================= */}
+<motion.section
+variants={fade}
+initial="hidden"
+whileInView="visible"
+viewport={{once:true}}
+ref={sectionRefs.current.ARCHITECTURE}
+data-section="ARCHITECTURE"
+className={styles.glassCard}
+>
+  <span className={styles.sectionKicker}>PLATFORM ARCHITECTURE</span>
+  <h2 className={styles.sectionTitle}>How ORGLIDE Is Engineered</h2>
+  <p className={styles.sectionLead}>
+    A distributed, event-driven AI platform built around tenant isolation,
+    deterministic AI orchestration, and an audit-grade trust fabric.
+    Every subsystem is designed to survive enterprise scrutiny — security,
+    compliance, observability, and resilience are first-class concerns.
+  </p>
+
+  <RevealGroup className={styles.archGrid} stagger={0.05}>
+    {orglideArchitecture.map((a, i) => (
+      <RevealItem key={i} className={styles.archCard}>
+        <span className={styles.archTag}>{a.tag}</span>
+        <h3 className={styles.archCardTitle}>{a.title}</h3>
+        <p className={styles.archCardDesc}>{a.desc}</p>
+      </RevealItem>
+    ))}
+  </RevealGroup>
+
+  <div className={styles.archCtaBox}>
+    <div>
+      <h3 className={styles.archCtaTitle}>Let's build enterprise AI systems.</h3>
+      <p className={styles.archCtaDesc}>
+        If you're operating in regulated industries — finance, healthcare,
+        infra, public sector — and need a serious AI governance and
+        compliance fabric, ORGLIDE is the platform we're building for you.
+      </p>
+    </div>
+    <div className={styles.archCtaBtns}>
+      <a href="https://www.orglide.com" target="_blank" rel="noreferrer" className={styles.orglideBtnPrimary}>orglide.com</a>
+      <a href="https://www.linkedin.com/company/orglide/" target="_blank" rel="noreferrer" className={styles.orglideBtnSecondary}>LinkedIn</a>
+    </div>
+  </div>
 </motion.section>
 
 
@@ -310,9 +1049,14 @@ data-section="PROJECTS"
 className={styles.glassCard}
 >
 
+<span className={styles.sectionKicker}>SELECTED WORK</span>
 <h1 className={styles.sectionTitle}>
-What I've Been Building?
+Other Engineering Work
 </h1>
+<p className={styles.sectionLead}>
+Alongside ORGLIDE, a selection of platforms, AI systems, and
+client engagements I've architected and shipped.
+</p>
 
 {/* ===== LINGOBRIDGE ===== */}
 <div className={styles.projectShowcase}>
@@ -684,39 +1428,6 @@ className={styles.glassCard}
 
 </motion.section>
 
-{/* ================= CASE STUDY ================= */}
-<motion.section
-variants={fade}
-initial="hidden"
-whileInView="visible"
-viewport={{ once:true }}
-ref={sectionRefs.current.CASESTUDIES}
-data-section="CASESTUDIES"
-className={styles.glassCard}
->
-
-<h2 className={styles.sectionTitle}>
-Case Studies
-</h2>
-
-<div className={styles.caseStudyBox}>
-
-<h3>Engineering Deep Dives — Coming Soon</h3>
-
-<p>
-Detailed architectural breakdowns of production systems,
-including scalability decisions, system design trade-offs,
-performance optimization strategies, and real-world
-deployment learnings will be published here.
-</p>
-
-<p className={styles.comingSoon}>
-🚧 Case studies currently under preparation.
-</p>
-
-</div>
-
-</motion.section>
 
 {/* ================= SKILLS ================= */}
 <motion.section
